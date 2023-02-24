@@ -8,6 +8,9 @@ import styles from './app.module.css'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { QueryClient, QueryClientProvider } from "react-query";
+
+
 
 const {parent}=styles;
 
@@ -18,10 +21,14 @@ const {parent}=styles;
 // });
 
 function App() {
+
+  const queryClient =new QueryClient();
+
   return (
     <>
     {/* <ThemeProvider theme={darkTheme}>
     <CssBaseline /> */}
+    <QueryClientProvider client={queryClient}>
     <div className={parent} >
       <Routes>
               <Route exact path='/identityViewPage' element={<IdentityViewPage/>} />
@@ -30,6 +37,7 @@ function App() {
               <Route path='/' element={<Login/>} />
       </Routes>
     </div>
+    </QueryClientProvider>
     {/* </ThemeProvider> */}
     </>
   );

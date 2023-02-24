@@ -15,14 +15,26 @@ import axios from 'axios';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useState } from "react";
 import { useModalState, useActiveButtonState, useContractAddress } from "../../store/activateContractStore";
+import { useGetBalance } from "../../hooks/useGetBalance";
 
 
-
-const columns = [
+// const columns = [
     
-    { field: 'currency', headerName: 'Currency', width: 150 },
+//     { field: 'currency', headerName: 'Currency', width: 150 },
+//     {
+//       field: 'amt',
+//       headerName: 'Amount',
+//       type: 'number',
+//       width: 360,
+//     },
+    
+//   ];
+
+  const columns = [
+    
+    { field: 'brand', headerName: 'Currency', width: 150 },
     {
-      field: 'amt',
+      field: 'discountPercentage',
       headerName: 'Amount',
       type: 'number',
       width: 360,
@@ -52,6 +64,13 @@ export const Wallet = () => {
   const setContractAddress= useContractAddress((state) => state.setContractAddress) 
   const { contractAddress } = useContractAddress((state) => ({ contractAddress: state.contractAddress }))
 
+  const { data: balance, refetch, isLoading , isSuccess} = useGetBalance({
+
+    cacheTime: 3600000,
+
+    staleTime: 3600000,
+
+  });
 
   const activateContract= async()=>{
     const contractAddressResponse= await axios.get('https://dummyjson.com/products/1')
@@ -65,6 +84,8 @@ export const Wallet = () => {
 
     setDisableButton({disableButton:true})
 
+    refetch();
+    console.log("balance is", balance)
     setActivateIsClicked(true)
     // localStorage.setItem('contract', contractAddress.data.description)
   }
@@ -116,7 +137,7 @@ export const Wallet = () => {
           <Grid item xs={12}>
 
           <div style={{ height: 220, width: '100%' , paddingTop: "2rem"}}>
-      <DataGrid
+      {isSuccess && activateIsClicked &&<DataGrid
         
         sx={{
            
@@ -124,7 +145,7 @@ export const Wallet = () => {
             borderRight: "none",
             borderBottom: "none"
         }}
-        rows={rows}
+        rows={balance.products}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
@@ -132,7 +153,7 @@ export const Wallet = () => {
         //   paging: false
         // }}
         hideFooterPagination={true}
-      />
+      />}
     </div>
           </Grid>
 
@@ -144,3 +165,5 @@ export const Wallet = () => {
 };
 
 
+// rows={rows}
+//balance.products
