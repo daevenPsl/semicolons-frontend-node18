@@ -6,14 +6,22 @@ import { ClaimCheckerPage } from './pages/ClaimCheckerPage/ClaimCheckerPage';
 import { Login } from './pages/Login/Login';
 import styles from './app.module.css'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const {parent}=styles;
+
+// const darkTheme = createTheme({
+//   palette: {
+//     mode: 'dark',
+//   },
+// });
 
 function App() {
   return (
     <>
-    
+    {/* <ThemeProvider theme={darkTheme}>
+    <CssBaseline /> */}
     <div className={parent} >
       <Routes>
               <Route exact path='/identityViewPage' element={<IdentityViewPage/>} />
@@ -21,10 +29,8 @@ function App() {
               <Route exact path='/claimCheckerPage' element={<ClaimCheckerPage/>} />
               <Route path='/' element={<Login/>} />
       </Routes>
-        {/* <IdentityViewPage/> */}
-        {/* <Login/> */}
     </div>
-    
+    {/* </ThemeProvider> */}
     </>
   );
 }

@@ -8,7 +8,7 @@ export const IdentityViewPage=()=>{
     return(
         <>
         <Navbar/>
-        <Grid container>
+        <Grid container >
             <Grid item xs={6}>
                 <Wallet/>
             </Grid>

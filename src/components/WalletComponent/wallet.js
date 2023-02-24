@@ -99,22 +99,23 @@ export const Wallet = () => {
           </Grid>
           <Grid item xs={12}>
 
-          <div style={{ height: 210, width: '100%' , paddingTop: "2rem"}}>
+          <div style={{ height: 220, width: '100%' , paddingTop: "2rem"}}>
       <DataGrid
         
         sx={{
            
             borderLeft: "none",
-            borderRight: "none"
-          
+            borderRight: "none",
+            borderBottom: "none"
         }}
         rows={rows}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
-        options={{
-          paging: false
-        }}
+        // options={{
+        //   paging: false
+        // }}
+        hideFooterPagination={true}
       />
     </div>
           </Grid>
