@@ -1,5 +1,5 @@
 import { Wallet } from "../../components/WalletComponent/wallet";
-import { Claim } from "../../components/ClaimComponent/claim";
+import { ClaimIssuerComponent } from "../../components/ClaimIssuerComponent/ClaimIssuerComponent";
 import Grid from "@mui/material/Grid";
 import Navbar from "../../components/NavBarComponent/Navbar";
 
@@ -14,7 +14,7 @@ export const ClaimIssuerPage=()=>{
                 <Wallet/>
             </Grid>
             <Grid item xs={6}>
-                <Claim/>
+                <ClaimIssuerComponent/>
             </Grid>
         </Grid>
         

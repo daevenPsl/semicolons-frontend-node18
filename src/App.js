@@ -14,11 +14,11 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 const {parent}=styles;
 
-// const darkTheme = createTheme({
-//   palette: {
-//     mode: 'dark',
-//   },
-// });
+const darkTheme = createTheme({
+   palette: {
+     mode: 'dark',
+   },
+ });
 
 function App() {
 
@@ -26,8 +26,8 @@ function App() {
 
   return (
     <>
-    {/* <ThemeProvider theme={darkTheme}>
-    <CssBaseline /> */}
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
     <QueryClientProvider client={queryClient}>
     <div className={parent} >
       <Routes>
@@ -38,7 +38,7 @@ function App() {
       </Routes>
     </div>
     </QueryClientProvider>
-    {/* </ThemeProvider> */}
+    </ThemeProvider>
     </>
   );
 }

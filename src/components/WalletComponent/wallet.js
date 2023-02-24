@@ -11,8 +11,8 @@ import Typography from "@mui/material/Typography";
 // import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import axios from 'axios';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import axios from "axios";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useModalState, useActiveButtonState, useContractAddress } from "../../store/activateContractStore";
 import { useGetBalance } from "../../hooks/useGetBalance";
@@ -88,14 +88,16 @@ export const Wallet = () => {
     console.log("balance is", balance)
     setActivateIsClicked(true)
     // localStorage.setItem('contract', contractAddress.data.description)
-  }
-
+  };
 
   return (
-    <Card sx={{
-      border: "none",
-      boxShadow: "none"
-  }}>
+    <Card
+      sx={{
+        border: "none",
+        boxShadow: "none",
+        marginX: "1rem",
+      }}
+    >
       {/* <Box sx={{ display: "flex", flexDirection: "column" }}> */}
         <CardContent>
 
@@ -133,8 +135,70 @@ export const Wallet = () => {
               </Button>
 
           </Grid>
+          {/* <Grid item xs={4} display="flex" justifyContent="flex-end">
+            <Button
+              variant="contained"
+              color="success"
+              onClick={activateContract}
+              disabled={disableButton}
+            >
+              Activate
+            </Button>
+          </Grid> */}
+
+          {/* <Grid item xs={12}>
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
+              {contractAddress}
+            </Typography>
+          </Grid> */}
+          
+          {/* <Grid item xs={2} style={{ marginTop: "1rem" }}>
+            <Button style={{ background: "#F2AA4CFF", color: "white" }}>
+              Send
+            </Button>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={2} style={{ marginTop: "1rem" }}>
+            <Button style={{ background: "#F2AA4CFF", color: "white" }}>
+              Receive
+            </Button>
+          </Grid> */}
+        </Grid>
+        <Grid item xs={12}>
+          <div style={{ height: 245, width: "100%", paddingTop: "2rem" }}>
+          {isSuccess && activateIsClicked &&<DataGrid
+              sx={{
+                borderLeft: "none",
+                borderRight: "none",
+                borderBottom: "none",
+              }}
+              rows={balance.products}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              // options={{
+              //   paging: false
+              // }}
+              hideFooterPagination={true}
+            />}
+          </div>
+        </Grid>
+      </CardContent>
+
+      {/* </Box> */}
+    </Card>
+  );
+};
+
+
+// rows={rows}
+//balance.products
+
+{/* 
+///herereer
 
           <div style={{ height: 220, width: '100%' , paddingTop: "2rem"}}>
       {isSuccess && activateIsClicked &&<DataGrid
@@ -155,15 +219,4 @@ export const Wallet = () => {
         hideFooterPagination={true}
       />}
     </div>
-          </Grid>
-
-        </CardContent>
-        
-      {/* </Box> */}
-    </Card>
-  );
-};
-
-
-// rows={rows}
-//balance.products
+    //herer */}
