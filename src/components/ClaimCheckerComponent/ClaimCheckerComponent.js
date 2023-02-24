@@ -11,88 +11,99 @@ import Typography from "@mui/material/Typography";
 // import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 
 const columns = [
-    
-    { field: 'number', headerName: 'Block', width: 100 },
-    { field: "identity", headerName: "Identity", width: 100 },
-    { field: "claim", headerName: "Claim Type", width: 150 },
-    { field: "Issuer", headerName: "Issuer", width: 100 },
-    { field: "result", headerName: "Result", width: 100 },
-   
-   
-  ];
+  { field: "number", headerName: "Block", width: 100 },
+  { field: "identity", headerName: "Identity", width: 100 },
+  { field: "claim", headerName: "Claim Type", width: 150 },
+  { field: "Issuer", headerName: "Issuer", width: 100 },
+  { field: "result", headerName: "Result", width: 155 },
+];
 
-  const rows = [
-    { id: 1, number: "9", identity: "Nick", claim: "Has Facebook",Issuer: "Origin",result: "Invalid"},
-  ];
-
+const rows = [
+  {
+    id: 1,
+    number: "9",
+    identity: "Nick",
+    claim: "Has Facebook",
+    Issuer: "Origin",
+    result: "Invalid",
+  },
+];
 
 export const ClaimCheckerComponent = () => {
+  const [showTable, setShowTable] = React.useState(false);
+  const [deploy, setDeploy] = React.useState(true);
+
+  const handleTable = () => {
+    setShowTable(true);
+  };
+
+  const handleDeploy = () => {
+    setDeploy(false);
+  };
+
+  const handleMultipleFunctions = () => {
+    handleTable();
+    handleDeploy();
+  };
 
   return (
-      
-    <Card >
-      {/* <Box sx={{ display: "flex", flexDirection: "column" }}> */}
-        <CardContent>
-
-          <Grid container>
-            <Grid item xs={8}>
-              <Typography component="div" variant="h5">
+    <Card>
+      <CardContent>
+        <Grid container>
+          <Grid item xs={8}>
+            <Typography component="div" variant="h5">
               Property Listing
-              </Typography>
-            </Grid>
-                        
-         
-            <Grid item xs={12}>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-              > 
-              </Typography>
-            </Grid>
+            </Typography>
+          </Grid>
 
-            <Grid item xs={12}>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-              >
-               
-              </Typography>
-            </Grid>
+          {deploy ? (
             <Grid item xs={2}>
-
-              <Button variant="contained" >
-                Verified!
+              <Button
+                variant="contained"
+                sx={{ marginTop: "2.5rem", mx: "-405px" }}
+                style={{ background: "#F2AA4CFF", color: "white" }}
+                onClick={handleMultipleFunctions}
+              >
+                Verify
               </Button>
-              
-          </Grid>
-         
-          </Grid>
+            </Grid>
+          ) : (
+            <Grid item xs={2}>
+              <Button
+                variant="contained"
+                sx={{ marginTop: "2.5rem", mx: "-405px" }}
+                style={{ background: "#F2AA4CFF", color: "white" }}
+              >
+                Verified
+              </Button>
+            </Grid>
+          )}
+        </Grid>
+
+        {showTable ? (
           <Grid item xs={12}>
-
-          <div style={{ height: 200, width: '100%' , paddingTop: "2rem"}}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-      />
-    </div>
+            <div style={{ height: 125, width: "100%", paddingTop: "1rem" }}>
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                rowsPerPageOptions={[5]}
+                hideFooterPagination={true}
+                hideFooter={true}
+              />
+            </div>
           </Grid>
-
-        </CardContent>
-        
-      {/* </Box> */}
+        ) : (
+          <div></div>
+        )}
+      </CardContent>
     </Card>
   );
 };
-
 
 // checkboxSelection
 // {

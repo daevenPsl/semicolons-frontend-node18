@@ -19,7 +19,7 @@ const Navbar = () => {
 
   const { navbarPosition } = styles;
 
-  const userName = localStorage.getItem("userName");
+  const userName = localStorage.getItem("username");
 
   const handleLogout = () => {
     localStorage.removeItem("userEmail");
@@ -62,8 +62,18 @@ const Navbar = () => {
           >
             {/* <MenuIcon /> */}
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Atmanirbhar {userName}
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, textTransform: "capitalize" }}
+          >
+            Hi, {userName}
+          </Typography>
+
+          <Typography
+            sx={{ mx: "220px", textTransform: "uppercase", fontWeight: "bold",fontSize: 22 }}
+          >
+            AatmaNirbhar
           </Typography>
 
           <Button
