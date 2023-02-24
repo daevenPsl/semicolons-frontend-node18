@@ -169,7 +169,7 @@ export const Wallet = () => {
         </Grid>
         <Grid item xs={12}>
           <div style={{ height: 245, width: "100%", paddingTop: "2rem" }}>
-          {isSuccess && activateIsClicked &&<DataGrid
+          {isSuccess && disableButton &&<DataGrid
               sx={{
                 borderLeft: "none",
                 borderRight: "none",
