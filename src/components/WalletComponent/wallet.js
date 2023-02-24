@@ -14,6 +14,7 @@ import Grid from "@mui/material/Grid";
 import axios from 'axios';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useState } from "react";
+import { useModalState, useActiveButtonState, useContractAddress } from "../../store/activateContractStore";
 
 
 
@@ -39,15 +40,30 @@ const columns = [
 
 export const Wallet = () => {
 
-  const [contractAddress,setContractAddress]= useState("")
+  // const [contractAddress,setContractAddress]= useState("")
   const [activateIsClicked, setActivateIsClicked]=useState(false)
+
+  // const setShowModal = useModalState((state) => state.setShowModal)
+  // const { showModal } = useModalState((state) => ({ showModal: state.showModal }))
+
+  const setDisableButton = useActiveButtonState((state) => state.setDisableButton) 
+  const { disableButton } = useActiveButtonState((state) => ({ disableButton: state.disableButton }))
+
+  const setContractAddress= useContractAddress((state) => state.setContractAddress) 
+  const { contractAddress } = useContractAddress((state) => ({ contractAddress: state.contractAddress }))
+
 
   const activateContract= async()=>{
     const contractAddressResponse= await axios.get('https://dummyjson.com/products/1')
     console.log("activate contract address clicked", contractAddressResponse)
 
     //will have to set the contract address here
-    setContractAddress(contractAddressResponse.data.description)
+    // setContractAddress(contractAddressResponse.data.description)
+    // setShowModal({ showModal:true })
+
+    setContractAddress({contractAddress: contractAddressResponse.data.description})
+
+    setDisableButton({disableButton:true})
 
     setActivateIsClicked(true)
     // localStorage.setItem('contract', contractAddress.data.description)
@@ -69,7 +85,7 @@ export const Wallet = () => {
               </Typography>
             </Grid>
             <Grid item xs={4}>
-              <Button variant="contained" color="success" onClick={activateContract} disabled={activateIsClicked}>
+              <Button variant="contained" color="success" onClick={activateContract} disabled={disableButton}>
                 Activate 
               </Button>
             </Grid>
