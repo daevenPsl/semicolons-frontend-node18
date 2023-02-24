@@ -1,8 +1,5 @@
 import axios from "axios";
 
-// import { ApiEndpoint } from "../constants/api-endpoint.constant";
-
-// import { CandidateData, CandidateApiResponse } from "../types/candidate.type";
 
 
 // https://dummyjson.com/products/1
@@ -21,8 +18,7 @@ export const BalanceService = {
 
     return axios.get('https://dummyjson.com/products?limit=10').then((res) => res.data);
 
-    // JSON.parse(jstring)
-    // res.data.products
+    
   },
 
 //   postCandidateData: async (data: FormData): Promise<CandidateApiResponse> => {

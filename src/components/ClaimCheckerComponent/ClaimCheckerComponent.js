@@ -91,7 +91,6 @@ export const ClaimCheckerComponent = () => {
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
-                rowsPerPageOptions={[5]}
                 hideFooterPagination={true}
                 hideFooter={true}
               />
@@ -105,24 +104,4 @@ export const ClaimCheckerComponent = () => {
   );
 };
 
-// checkboxSelection
-// {
-//     field: 'fullName',
-//     headerName: 'Full name',
-//     description: 'This column has a value getter and is not sortable.',
-//     sortable: false,
-//     width: 160,
-//     valueGetter: (params) =>
-//       `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-//   },
-/* <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-            <IconButton aria-label="previous">
-              {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-            </IconButton>
-            <IconButton aria-label="play/pause">
-              <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-            </IconButton>
-            <IconButton aria-label="next">
-              {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-            </IconButton>
-          </Box> */
+
