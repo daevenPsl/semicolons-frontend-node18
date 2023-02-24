@@ -11,17 +11,17 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 const {parent}=styles;
 
-// const darkTheme = createTheme({
-//   palette: {
-//     mode: 'dark',
-//   },
-// });
+const darkTheme = createTheme({
+   palette: {
+     mode: 'dark',
+   },
+ });
 
 function App() {
   return (
     <>
-    {/* <ThemeProvider theme={darkTheme}>
-    <CssBaseline /> */}
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
     <div className={parent} >
       <Routes>
               <Route exact path='/identityViewPage' element={<IdentityViewPage/>} />
@@ -30,7 +30,7 @@ function App() {
               <Route path='/' element={<Login/>} />
       </Routes>
     </div>
-    {/* </ThemeProvider> */}
+    </ThemeProvider>
     </>
   );
 }
