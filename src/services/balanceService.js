@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import * as ethers from "ethers";
+
 // https://dummyjson.com/products/1
 
 export const BalanceService = {
