@@ -42,7 +42,7 @@ export const createIdentity = async (username, email, walletAddress, role) => {
       username,
       email,
       walletAddress,
-      role: ROLE,
+      role: ROLE.toUpperCase(),
     };
     let response = await instance.postRequest(
       headers,
@@ -58,7 +58,7 @@ export const createIdentity = async (username, email, walletAddress, role) => {
 
 export const getClaimIssuer = async () => {
   try {
-    let response = await instance.getRequest({}, `/identity/claimIssuers`);
+    let response = await instance.getRequest({}, `/identity/claimIssuers`,{});
     return response;
   } catch (exception) {
     console.log("exception in get claim issuer function: " + exception);
