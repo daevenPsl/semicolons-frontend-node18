@@ -18,6 +18,8 @@ export const BalanceService = {
     const email= localStorage.getItem('userEmail')
     const role= localStorage.getItem('role');
 
+    
+
     console.log({
       email: email,
       password: password,
