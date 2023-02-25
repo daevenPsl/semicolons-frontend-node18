@@ -1,6 +1,8 @@
 import { SoulWalletLib } from "soul-wallet-lib";
 import * as ethers from "ethers";
 import * as constants from "./utils/constants.js";
+const USDCoin = require("../artifacts/contracts/dev/USDC.sol/USDCoin.json")
+
 
 const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545/");
 const initializedSoulWalletLib = new SoulWalletLib(
