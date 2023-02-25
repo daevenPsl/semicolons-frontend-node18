@@ -27,7 +27,8 @@ export async function getClaimsForIdentity (walletAddress) {
     for (let i = 0; i< obtainClaimRequestFromAPI; i++) {
         obtainedClaimsFromContract.push({
             claimType : claimToType.get(claimTypeToClaimId("KYC")),
-            issuerName : claimIssuerWalletAddressToName.get(obtainClaimRequestFromAPI[i].issuerAddress)
+            issuerName : claimIssuerWalletAddressToName.get(obtainClaimRequestFromAPI[i].issuerAddress),
+            claimStatus : false
         })
     }
     

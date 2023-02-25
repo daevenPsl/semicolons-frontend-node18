@@ -8,7 +8,8 @@ const initializedSoulWalletLib = new SoulWalletLib(constants.CONFIG.ENTRYPOINT_C
 export async function calculateWalletAddress() {
 
     const ownerSigner = ethers.Wallet.createRandom();
-
+    console.log("constants.CONFIG.ENTRYPOINT_CONTRACT_ADDRESS Bla blaaa bla bla", constants.CONFIG.ENTRYPOINT_CONTRACT_ADDRESS)
+    console.log("constants.CONFIG.ENTRYPOINT_CONTRACT_ADDRESS Bla blaaa bla bla", constants.CONFIG.ENTRYPOINT_CONTRACT_ADDRESS)
     const ownerWalletAddress = initializedSoulWalletLib.calculateWalletAddress(
         constants.CONFIG.SOUL_WALLET_LOGIC_CONTRACT_ADDRESS,
         constants.CONFIG.ENTRYPOINT_CONTRACT_ADDRESS,

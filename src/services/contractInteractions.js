@@ -4,7 +4,7 @@ const SOUL_WALLET_LOGIC_ABI = require("./../artifacts/contracts/SoulWallet.sol/S
 const MOCK_USDC_ABI = require("./../artifacts/contracts/dev/USDC.sol/USDCoin.json")
 const { keyToPurpose, keyToType, claimTypeToClaimId, claimToType } = require('./utils/mappings');
 
-const SOUL_WALLET_INTERFACE = ethers.utils.Interface(SOUL_WALLET_LOGIC_ABI);
+const SOUL_WALLET_INTERFACE = new ethers.utils.Interface(SOUL_WALLET_LOGIC_ABI.abi);
 const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545/");
 const EOASigner = new ethers.Wallet(constants.CONFIG.ADMIN_PRIVATE_KEY, provider);
 
@@ -51,7 +51,8 @@ export async function getClaimsFromWallet(walletAddress, claimIssuerWalletAddres
         let claimData = await soulWalletContract.getClaim(obtainedKYCClaims[i]);
         claimsData.push({
             claimType : claimToType.get(claimTypeToClaimId("KYC")),
-            issuerName : claimIssuerWalletAddressToName.get(claimData[2])
+            issuerName : claimIssuerWalletAddressToName.get(claimData[2]),
+            claimStatus : true
         })
     }
 
