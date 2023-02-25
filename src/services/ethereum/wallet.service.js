@@ -48,7 +48,7 @@ export async function createIssuerAccount() {
 }
 
 export async function createVerifierAccount() {
-  return await createWalletForVerifier(verifierAccount);
+  return await createWalletForSigner(verifierAccount);
 }
 
 export async function createWalletForVerifier(signer) {
@@ -154,4 +154,78 @@ export async function getBalances(walletAddress) {
     },
   ];
   return balances;
+}
+
+// export async function getKeys(walletAddress) {
+//   const soulWalletContract = new ethers.Contract(
+//     walletAddress,
+//     SOUL_WALLET_INTERFACE,
+//     provider
+//   );
+//identity --> hash id acc mgt
+//issuer --> mgt and claim acc
+//
+//   const managmentKeysObtained = await soulWalletContract.getKeysByPurpose(1);
+
+//   let keysId = managmentKeysObtained;
+
+//   if (!isIdentity) {
+//     const claimSignerKeysObtained = await soulWalletContract.getKeysByPurpose(
+//       3
+//     );
+//     for (let i = 0; i < claimSignerKeysObtained.length; i++) {
+//       keysId.push(claimSignerKeysObtained[i]);
+//     }
+//   }
+
+//   let keysData = [];
+
+//   for (let i = 0; i < keysId.length; i++) {
+//     let keyData = await soulWalletContract.getKey(keysId[i]);
+//     keysData.push({
+//       keyId: keyData[2],
+//       keyPurpose: keyToPurpose.get(keyData[0].toNumber()),
+//       keyType: keyToType.get(keyData[1].toNumber()),
+//     });
+//   }
+
+//   return keysData;
+// }
+
+export async function getKeys(role) {
+  let keysData = [];
+
+  if (role === "identity") {
+    let identityAddress = await identityAccount.getAddress();
+    const identityKeyHash = ethers.utils.keccak256(identityAddress);
+
+    keysData.push({
+      id: "1",
+      keyId: identityKeyHash,
+      keyPurpose: "MANAGEMENT",
+      keyType: "ECDSA",
+    });
+  }
+  if (role === "claim-issuer") {
+    let issuerMgtAccount = await issuerManagementAccount.getAddress();
+    const issuerMgtAccountKeyHash = ethers.utils.keccak256(issuerMgtAccount);
+
+    keysData.push({
+      id: "2",
+      keyId: issuerMgtAccountKeyHash,
+      keyPurpose: "MANAGEMENT",
+      keyType: "ECDSA",
+    });
+
+    let issuerClaimAccount = await issuerClaimAccount.getAddress();
+    const issuerClaimKeyHash = ethers.utils.keccak256(issuerClaimAccount);
+
+    keysData.push({
+      id: "3",
+      keyId: issuerClaimKeyHash,
+      keyPurpose: "CLAIM_SIGNER",
+      keyType: "ECDSA",
+    });
+  }
+  return { products: keysData };
 }
