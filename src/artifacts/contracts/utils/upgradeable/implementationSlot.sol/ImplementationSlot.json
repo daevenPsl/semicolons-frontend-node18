@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ImplementationSlot",
+  "sourceName": "contracts/utils/upgradeable/implementationSlot.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212200801d0dac3ef2f7641f323eeb989b4bb3b87724858dd67c5b68b8f8eae3617f964736f6c63430008110033",
+  "deployedBytecode": "0x6080604052600080fdfea26469706673582212200801d0dac3ef2f7641f323eeb989b4bb3b87724858dd67c5b68b8f8eae3617f964736f6c63430008110033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
