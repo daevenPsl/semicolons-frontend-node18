@@ -11,31 +11,18 @@ import {
   useActiveButtonState,
   useContractAddress,
 } from "../../store/activateContractStore";
-import { useGetBalance } from "../../hooks/useGetBalance";
-import styles from "./wallet.module.css";
-
-// const columns = [
-
-//     { field: 'currency', headerName: 'Currency', width: 150 },
-//     {
-//       field: 'amt',
-//       headerName: 'Amount',
-//       type: 'number',
-//       width: 360,
-//     },
-
-//   ];
+import * as walletService from "../../services/ethereum/wallet.service";
 
 const columns = [
   {
-    field: "brand",
+    field: "currencyName",
     headerName: "Currency",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 198,
   },
   {
-    field: "discountPercentage",
+    field: "currencyValue",
     headerName: "Amount",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
@@ -50,19 +37,31 @@ const rows = [
 ];
 
 export const Wallet = () => {
+  const [walletAddress, setWalletAddress] = useState('');
+  const [balances, setBalances] = useState([]);
+  const [balanceLoading, setBalanceLoading] = useState(false);
 
   useEffect(() => {
     const walletAddress = localStorage.getItem("walletAddress");
-    setContractAddress({ contractAddress: walletAddress });
+    setWalletAddress(walletAddress);
   }, []);
 
-  // const [contractAddress,setContractAddress]= useState("")
-  const [activateIsClicked, setActivateIsClicked] = useState(false);
+  useEffect(() => {
+    setBalanceLoading(true);
+    async function getBalances() {
+      if (!walletAddress) {
+        setBalanceLoading(false);
+        return;
+      }
+      const balancesForAddress = await walletService.getBalances(walletAddress);
+      setBalances(balancesForAddress);
+      setBalanceLoading(false);
+    }
+    getBalances();
+  }, [walletAddress])
+
   const userName = localStorage.getItem("username");
 
-  // const setShowModal = useModalState((state) => state.setShowModal)
-  // const { showModal } = useModalState((state) => ({ showModal: state.showModal }))
-  const { sendButton } = styles;
   const setDisableButton = useActiveButtonState(
     (state) => state.setDisableButton
   );
@@ -70,41 +69,10 @@ export const Wallet = () => {
     disableButton: state.disableButton,
   }));
 
-  const setContractAddress = useContractAddress(
-    (state) => state.setContractAddress
-  );
-  const { contractAddress } = useContractAddress((state) => ({
-    contractAddress: state.contractAddress,
-  }));
-
-  const {
-    data: balance,
-    refetch,
-    isLoading,
-    isSuccess,
-  } = useGetBalance({
-    cacheTime: 3600000,
-
-    staleTime: 3600000,
-  });
-
   const activateContract = async () => {
     const contractAddress = localStorage.getItem("walletAddress");
-
-    //will have to set the contract address here
-    // setContractAddress(contractAddressResponse.data.description)
-    // setShowModal({ showModal:true })
-
-    setContractAddress({
-      contractAddress: contractAddress,
-    });
-
+    setWalletAddress(contractAddress);
     setDisableButton({ disableButton: true });
-
-    refetch();
-    console.log("balance is", balance);
-    setActivateIsClicked(true);
-    // localStorage.setItem('contract', contractAddress.data.description)
   };
 
   return (
@@ -131,7 +99,7 @@ export const Wallet = () => {
               component="div"
             >
               {/* xxx-fs3434sw-wswed33443 */}
-              {contractAddress}
+              {walletAddress}
             </Typography>
           </Grid>
 
@@ -166,41 +134,10 @@ export const Wallet = () => {
               Activate
             </Button>
           </Grid>
-          {/* <Grid item xs={4} display="flex" justifyContent="flex-end">
-            <Button
-              variant="contained"
-              color="success"
-              onClick={activateContract}
-              disabled={disableButton}
-            >
-              Activate
-            </Button>
-          </Grid> */}
-
-          {/* <Grid item xs={12}>
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="div"
-            >
-              {contractAddress}
-            </Typography>
-          </Grid> */}
-
-          {/* <Grid item xs={2} style={{ marginTop: "1rem" }}>
-            <Button style={{ background: "#F2AA4CFF", color: "white" }}>
-              Send
-            </Button>
-          </Grid>
-          <Grid item xs={2} style={{ marginTop: "1rem" }}>
-            <Button style={{ background: "#F2AA4CFF", color: "white" }}>
-              Receive
-            </Button>
-          </Grid> */}
         </Grid>
         <Grid item xs={12}>
           <div style={{ height: 245, width: "100%", paddingTop: "2rem" }}>
-            {isSuccess && (
+            {!balanceLoading && (
               <DataGrid
                 sx={{
                   "& .super-app-theme--header": {
@@ -212,13 +149,10 @@ export const Wallet = () => {
                   borderRight: "none",
                   borderBottom: "none",
                 }}
-                rows={balance.products}
+                rows={balances}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
-                // options={{
-                //   paging: false
-                // }}
                 hideFooterPagination={true}
               />
             )}
@@ -226,37 +160,6 @@ export const Wallet = () => {
         </Grid>
       </CardContent>
 
-      {/* </Box> */}
     </Card>
   );
 };
-
-// rows={rows}
-//balance.products
-// {isSuccess && disableButton && ( 197
-
-{
-  /* 
-///herereer
-
-          <div style={{ height: 220, width: '100%' , paddingTop: "2rem"}}>
-      {isSuccess && activateIsClicked &&<DataGrid
-        
-        sx={{
-           
-            borderLeft: "none",
-            borderRight: "none",
-            borderBottom: "none"
-        }}
-        rows={balance.products}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        // options={{
-        //   paging: false
-        // }}
-        hideFooterPagination={true}
-      />}
-    </div>
-    //herer */
-}

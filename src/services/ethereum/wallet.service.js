@@ -1,6 +1,7 @@
 import * as ethers from "ethers";
 import constants from "../utils/constants.js";
 import claimHolderABI from "./abis/ClaimHolder.json";
+import * as usdCoin from "./usdcoin.service.js";
 
 
 const ClaimHolder_factory = new ethers.ContractFactory(claimHolderABI.abi, claimHolderABI.bytecode);
@@ -84,3 +85,22 @@ export async function addClaim(identityWalletAddress, signer, claim) {
     .then((tx) => tx.wait());
 }
 
+export async function getBalances(walletAddress) {
+  const balances = [
+    {
+      currencyName: "ETH",
+      currencyValue: await constants.PROVIDER.getBalance(walletAddress)
+        .then((b) => ethers.utils.formatEther(b))
+        .then((b) => b.toString()),
+      id: 1,
+    },
+    {
+      currencyName: "USDC",
+      currencyValue: await usdCoin
+        .balanceOf(walletAddress)
+        .then((b) => b.toString()),
+      id: 2,
+    },
+  ];
+  return balances;
+}
