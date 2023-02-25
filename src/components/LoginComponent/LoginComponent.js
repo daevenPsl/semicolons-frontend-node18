@@ -83,6 +83,7 @@ export default function LoginComponent() {
     console.log("Signup Role: ", role);
     const walletAddress = await signupService.signup(role);
     console.log("Wallet created for identity:", walletAddress);
+    localStorage.setItem("walletAddress", walletAddress);
     navigate("/identityViewPage");
     // console.log("called")
   };

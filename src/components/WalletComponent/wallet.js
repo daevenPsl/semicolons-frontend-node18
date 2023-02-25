@@ -1,26 +1,17 @@
 import * as React from "react";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
+import {useEffect} from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-// import CardMedia from '@mui/material/CardMedia';
-// import IconButton from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
-// import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-// import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-// import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import axios from "axios";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import {
-  useModalState,
   useActiveButtonState,
   useContractAddress,
 } from "../../store/activateContractStore";
 import { useGetBalance } from "../../hooks/useGetBalance";
-import { useGetData } from "../../hooks/useGetData";
 import styles from "./wallet.module.css";
 
 // const columns = [
@@ -59,6 +50,12 @@ const rows = [
 ];
 
 export const Wallet = () => {
+
+  useEffect(() => {
+    const walletAddress = localStorage.getItem("walletAddress");
+    setContractAddress({ contractAddress: walletAddress });
+  }, []);
+
   // const [contractAddress,setContractAddress]= useState("")
   const [activateIsClicked, setActivateIsClicked] = useState(false);
   const userName = localStorage.getItem("username");
@@ -92,17 +89,14 @@ export const Wallet = () => {
   });
 
   const activateContract = async () => {
-    const contractAddressResponse = await axios.get(
-      "https://dummyjson.com/products/1"
-    );
-    console.log("activate contract address clicked", contractAddressResponse);
+    const contractAddress = localStorage.getItem("walletAddress");
 
     //will have to set the contract address here
     // setContractAddress(contractAddressResponse.data.description)
     // setShowModal({ showModal:true })
 
     setContractAddress({
-      contractAddress: contractAddressResponse.data.description,
+      contractAddress: contractAddress,
     });
 
     setDisableButton({ disableButton: true });

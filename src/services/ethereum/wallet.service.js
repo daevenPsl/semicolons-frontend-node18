@@ -23,7 +23,7 @@ export async function createWalletForSigner(signer) {
     .connect(signer)
     .deploy()
     .then((c) => c.deployed()); 
-  console.log("Claim holder deployed for:", signer.address);
+  console.log("Claim holder deployed for:", await signer.getAddress());
   console.log("Contract address:", contract.address);
   return contract.address;
 }
