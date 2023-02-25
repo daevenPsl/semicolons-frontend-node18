@@ -20,6 +20,8 @@ import {
   useContractAddress,
 } from "../../store/activateContractStore";
 import { useGetBalance } from "../../hooks/useGetBalance";
+import { useGetData } from "../../hooks/useGetData";
+
 
 // const columns = [
 

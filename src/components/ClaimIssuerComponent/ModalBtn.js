@@ -25,24 +25,49 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import axios from "axios";
 import { ButtonGroup, ToggleButton } from "@material-ui/core";
+import { useGetData } from "../../hooks/useGetData";
+
+// const columns = [
+//   {
+//     field: "key",
+//     headerName: "Keys",
+//     headerClassName: "super-app-theme--header",
+//     headerAlign: "center",
+//     width: 187,
+//   },
+//   {
+//     field: "purpose",
+//     headerName: "Purpose",
+//     headerClassName: "super-app-theme--header",
+//     headerAlign: "center",
+//     width: 220,
+//   },
+//   {
+//     field: "type",
+//     headerName: "Type",
+//     headerClassName: "super-app-theme--header",
+//     headerAlign: "center",
+//     width: 192,
+//   },
+// ];
 
 const columns = [
   {
-    field: "key",
+    field: "brand",
     headerName: "Keys",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 187,
   },
   {
-    field: "purpose",
+    field: "brand",
     headerName: "Purpose",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 220,
   },
   {
-    field: "type",
+    field: "brand",
     headerName: "Type",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
@@ -100,6 +125,11 @@ export function FormDialog() {
       setShowTextField(true);
     }
   };
+
+  const { data: tableData, refetch: refetchTables, isLoading: isLoadingTables , isSuccess: isSuccessTable}=useGetData({
+    cacheTime: 3600000,
+    staleTime: 3600000,
+  })
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -199,7 +229,7 @@ export function FormDialog() {
       </Dialog>
 
       <Grid item xs={12} showTable={showTable}>
-        {!disableDeployButton ? (
+        {isSuccessTable && !disableDeployButton ? (
           <>
             <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
               <div
@@ -216,7 +246,7 @@ export function FormDialog() {
                       fontSize: "15px",
                     },
                   }}
-                  rows={rows}
+                  rows={tableData.products}
                   columns={columns}
                   pageSize={5}
                   rowsPerPageOptions={[5]}
