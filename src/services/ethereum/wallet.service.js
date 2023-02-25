@@ -29,7 +29,7 @@ export async function createIssuerAccount() {
 }
 
 export async function createVerifierAccount() {
-  return await createWalletForVerifier(verifierAccount);
+  return await createWalletForSigner(verifierAccount);
 }
 
 export async function createWalletForVerifier(signer) {
