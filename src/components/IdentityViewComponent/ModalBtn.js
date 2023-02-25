@@ -19,11 +19,35 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import GoogleIcon from "@mui/icons-material/Google";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 const columns = [
-  { field: "key", headerName: "Keys", width: 187 },
-  { field: "purpose", headerName: "Purpose", width: 220 },
-  { field: "type", headerName: "Type", width: 192 },
+  {
+    field: "key",
+    headerName: "Keys",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 187,
+  },
+  {
+    field: "purpose",
+    headerName: "Purpose",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 220,
+  },
+  {
+    field: "type",
+    headerName: "Type",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 185,
+  },
 ];
 
 const rows = [
@@ -33,9 +57,46 @@ const rows = [
 ];
 
 const columns1 = [
-  { field: "services", headerName: "Claim Signer Services", width: 187 },
-  { field: "issuer", headerName: "Issuer Icon", width: 220 },
-  { field: "claimType", headerName: "Claim Type", width: 192 },
+  {
+    field: "services",
+    headerName: "Signer Services",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 170,
+  },
+  {
+    field: "issuer",
+    headerName: "Issuer Icon",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 140,
+  },
+  {
+    field: "claimType",
+    headerName: "Claim Type",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 140,
+  },
+  {
+    field: "actions",
+    headerName: "Actions",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    renderCell: (cellValues) => {
+      return (
+        <Button
+          style={{ background: "#F2AA4CFF", color: "white" }}
+          /* onClick={(event) => {
+            handleClick(event, cellValues);
+          }} */
+        >
+          Add Claim
+        </Button>
+      );
+    },
+    width: 142,
+  },
 ];
 
 const rows1 = [
@@ -71,28 +132,34 @@ export function FormDialog() {
     handleDeploy();
   };
 
+  const [alignment, setAlignment] = React.useState("left");
+
+  const handleAlignment = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
+
   return (
     <div>
       {deploy ? (
         <Button
-          sx={{ mt: -2.7 }}
+          sx={{ mt: -2.7, mb: 2 }}
           deploy={deploy}
           style={{ background: "#F2AA4CFF", color: "white" }}
           onClick={handleClickOpen}
         >
-          Deploy
+          Request Claim
         </Button>
       ) : (
         <div></div>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Enter the claim details</DialogTitle>
+        <DialogTitle>Enter the Claim Details</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>
             To subscribe to this website, please enter your email address here. We
             will send updates occasionally.
           </DialogContentText> */}
-          <TextField
+          {/* <TextField
             autoFocus
             margin="dense"
             id="name"
@@ -100,51 +167,24 @@ export function FormDialog() {
             type="text"
             fullWidth
             variant="standard"
-          />
-          <p style={{ fontWeight: 500, fontSize: 17 }}>SELECT THE ISSUER</p>
-          <Button variant="outlined">
-            <IconButton color="primary" aria-label="add">
-              <GoogleIcon />
-            </IconButton>
-          </Button>
-          <Button variant="outlined" style={{ marginLeft: "1rem" }}>
-            <IconButton color="primary" aria-label="add">
-              <VpnKeyIcon />
-            </IconButton>
-          </Button>
-          {/* <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">
-              Trusted Issuer
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="Google"
-              name="radio-buttons-group"
-            >
-              <FormControlLabel
-                value="Google"
-                id="Google"
-                control={<Radio />}
-                label="Google"
-              />
-              <FormControlLabel
-                value="Facebook"
-                id="Facebook"
-                control={<Radio />}
-                label="Facebook"
-              />
-            </RadioGroup>
-          </FormControl> */}
-          {/* <TextField
-            autoFocus
-            margin="dense"
-            id="trusted-issuer"
-            label="Trusted Issuer"
-            type="text"
-            fullWidth
-            variant="standard"
           /> */}
-          <TextField
+          {/* <InputLabel id="demo-simple-select-label">Select the claim issuer</InputLabel> */}
+          <Select
+            labelId="demo-simple-select-label"
+            defaultValue="1"
+            id="role"
+            //value={role}
+            label="Role"
+            //onChange={handleRoleChange}
+            //value={selectedOption}
+            //onChange={handleSelectChange}
+            fullWidth
+          >
+            <MenuItem value="1">Select the Claim Issuer</MenuItem>
+            <MenuItem value="kyc">Options from api</MenuItem>
+            {/* <MenuItem value="google">Google</MenuItem> */}
+          </Select>
+          {/* <TextField
             autoFocus
             margin="dense"
             id="claim-type"
@@ -152,7 +192,21 @@ export function FormDialog() {
             type="text"
             fullWidth
             variant="standard"
-          />
+          /> */}
+          <ToggleButtonGroup
+            value={alignment}
+            exclusive
+            onChange={handleAlignment}
+            aria-label="text alignment"
+            sx={{ marginTop: "1rem" }}
+          >
+            <ToggleButton value="google" id="google" aria-label="left aligned">
+              <GoogleIcon />
+            </ToggleButton>
+            <ToggleButton value="kyc" id="kyc" aria-label="centered">
+              <VpnKeyIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -160,57 +214,48 @@ export function FormDialog() {
         </DialogActions>
       </Dialog>
 
-      <Grid item xs={12} showTable={showTable}>
-        {showTable ? (
-          <>
-            <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
-              <div style={{ height: 213, width: "100%" }}>
-                <DataGrid
-                  rows={rows}
-                  columns={columns}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
-                  hideFooterPagination={true}
-                  hideFooter={true}
-                />
-              </div>
-            </Grid>
-
-            <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
-              <div style={{ height: 213, width: "100%", marginTop: "1rem" }}>
-                <DataGrid
-                  rows={rows1}
-                  columns={columns1}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
-                  hideFooterPagination={true}
-                  hideFooter={true}
-                />
-              </div>
-            </Grid>
-          </>
-        ) : (
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: "100vh", padding: "2rem" }}
-          >
-            <Grid item xs={3}>
-              <Card
-                style={{
-                  padding: "0.5rem",
-                  background: "#F2AA4CFF",
-                  color: "white",
+      <Grid item xs={12}>
+        <>
+          <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
+            <div style={{ height: 213, width: "100%" }}>
+              <DataGrid
+                sx={{
+                  "& .super-app-theme--header": {
+                    backgroundColor: "#F2AA4CFF",
+                    textTransform: "uppercase",
+                    fontSize: "15px",
+                  },
                 }}
-              >
-                NO CLAIMS ADDED
-              </Card>
-            </Grid>
+                rows={rows}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                hideFooterPagination={true}
+                hideFooter={true}
+              />
+            </div>
           </Grid>
-        )}
+
+          <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
+            <div style={{ height: 213, width: "100%", marginTop: "1rem" }}>
+              <DataGrid
+                sx={{
+                  "& .super-app-theme--header": {
+                    backgroundColor: "#F2AA4CFF",
+                    textTransform: "uppercase",
+                    fontSize: "15px",
+                  },
+                }}
+                rows={rows1}
+                columns={columns1}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                hideFooterPagination={true}
+                hideFooter={true}
+              />
+            </div>
+          </Grid>
+        </>
       </Grid>
     </div>
   );

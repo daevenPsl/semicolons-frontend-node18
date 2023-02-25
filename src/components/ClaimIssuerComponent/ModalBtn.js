@@ -24,11 +24,55 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import axios from "axios";
+import { ButtonGroup, ToggleButton } from "@material-ui/core";
+import { useGetData } from "../../hooks/useGetData";
+
+// const columns = [
+//   {
+//     field: "key",
+//     headerName: "Keys",
+//     headerClassName: "super-app-theme--header",
+//     headerAlign: "center",
+//     width: 187,
+//   },
+//   {
+//     field: "purpose",
+//     headerName: "Purpose",
+//     headerClassName: "super-app-theme--header",
+//     headerAlign: "center",
+//     width: 220,
+//   },
+//   {
+//     field: "type",
+//     headerName: "Type",
+//     headerClassName: "super-app-theme--header",
+//     headerAlign: "center",
+//     width: 192,
+//   },
+// ];
 
 const columns = [
-  { field: "key", headerName: "Keys", width: 187 },
-  { field: "purpose", headerName: "Purpose", width: 220 },
-  { field: "type", headerName: "Type", width: 192 },
+  {
+    field: "brand",
+    headerName: "Keys",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 187,
+  },
+  {
+    field: "brand",
+    headerName: "Purpose",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 220,
+  },
+  {
+    field: "brand",
+    headerName: "Type",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 192,
+  },
 ];
 
 const rows = [
@@ -38,9 +82,27 @@ const rows = [
 ];
 
 const columns1 = [
-  { field: "services", headerName: "Claim Signer Services", width: 187 },
-  { field: "issuer", headerName: "Issuer Icon", width: 220 },
-  { field: "claimType", headerName: "Claim Type", width: 192 },
+  {
+    field: "services",
+    headerName: "Signer Services",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 187,
+  },
+  {
+    field: "issuer",
+    headerName: "Issuer Icon",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 220,
+  },
+  {
+    field: "claimType",
+    headerName: "Claim Type",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 192,
+  },
 ];
 
 const rows1 = [
@@ -63,6 +125,11 @@ export function FormDialog() {
       setShowTextField(true);
     }
   };
+
+  const { data: tableData, refetch: refetchTables, isLoading: isLoadingTables , isSuccess: isSuccessTable}=useGetData({
+    cacheTime: 3600000,
+    staleTime: 3600000,
+  })
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -129,57 +196,6 @@ export function FormDialog() {
           <p style={{ fontWeight: 500, fontSize: 17 }}>
             Wallet Address: Wallet Address from API
           </p>
-          {/* <Button variant="outlined">
-            <IconButton color="primary" aria-label="add">
-              <GoogleIcon />
-            </IconButton>
-          </Button>
-          <Button variant="outlined" style={{ marginLeft: "1rem" }}>
-            <IconButton color="primary" aria-label="add">
-              <VpnKeyIcon />
-            </IconButton>
-          </Button> */}
-          {/* <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">
-              Trusted Issuer
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="Google"
-              name="radio-buttons-group"
-            >
-              <FormControlLabel
-                value="Google"
-                id="Google"
-                control={<Radio />}
-                label="Google"
-              />
-              <FormControlLabel
-                value="Facebook"
-                id="Facebook"
-                control={<Radio />}
-                label="Facebook"
-              />
-            </RadioGroup>
-          </FormControl> */}
-          {/* <TextField
-            autoFocus
-            margin="dense"
-            id="trusted-issuer"
-            label="Trusted Issuer"
-            type="text"
-            fullWidth
-            variant="standard"
-          /> */}
-          {/* <TextField
-            autoFocus
-            margin="dense"
-            id="claim-type"
-            label="Claim Type"
-            type="text"
-            fullWidth
-            variant="standard"
-          /> */}
           <InputLabel id="demo-simple-select-label">Claim Type</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -213,12 +229,24 @@ export function FormDialog() {
       </Dialog>
 
       <Grid item xs={12} showTable={showTable}>
-        {!disableDeployButton ? (
+        {isSuccessTable && !disableDeployButton ? (
           <>
             <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
-              <div style={{ height: 213, width: "100%" }}>
+              <div
+                style={{
+                  height: 213,
+                  width: "100%",
+                }}
+              >
                 <DataGrid
-                  rows={rows}
+                  sx={{
+                    "& .super-app-theme--header": {
+                      backgroundColor: "#F2AA4CFF",
+                      textTransform: "uppercase",
+                      fontSize: "15px",
+                    },
+                  }}
+                  rows={tableData.products}
                   columns={columns}
                   pageSize={5}
                   rowsPerPageOptions={[5]}
@@ -231,6 +259,13 @@ export function FormDialog() {
             <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
               <div style={{ height: 213, width: "100%", marginTop: "1rem" }}>
                 <DataGrid
+                  sx={{
+                    "& .super-app-theme--header": {
+                      backgroundColor: "#F2AA4CFF",
+                      textTransform: "uppercase",
+                      fontSize: "15px",
+                    },
+                  }}
                   rows={rows1}
                   columns={columns1}
                   pageSize={5}

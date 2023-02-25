@@ -14,13 +14,18 @@ import Grid from "@mui/material/Grid";
 import axios from "axios";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useState } from "react";
-import { useModalState, useActiveButtonState, useContractAddress } from "../../store/activateContractStore";
+import {
+  useModalState,
+  useActiveButtonState,
+  useContractAddress,
+} from "../../store/activateContractStore";
 import { useGetBalance } from "../../hooks/useGetBalance";
 import { activateWallet } from "../../services/activateWallet";
+import { useGetData } from "../../hooks/useGetData";
 
 
 // const columns = [
-    
+
 //     { field: 'currency', headerName: 'Currency', width: 150 },
 //     {
 //       field: 'amt',
@@ -28,49 +33,55 @@ import { activateWallet } from "../../services/activateWallet";
 //       type: 'number',
 //       width: 360,
 //     },
-    
+
 //   ];
 
-  const columns = [
-    
-    { field: 'brand', headerName: 'Currency', width: 150 },
-    {
-      field: 'discountPercentage',
-      headerName: 'Amount',
-      type: 'number',
-      width: 360,
-    },
-    
-  ];
+const columns = [
+  { field: "brand", headerName: "Currency", width: 150 },
+  {
+    field: "discountPercentage",
+    headerName: "Amount",
+    type: "number",
+    width: 360,
+  },
+];
 
-  const rows = [
-    { id: 1, currency: 'ETH', amt: 0.3590980 },
-    { id: 2, currency: 'wETH', amt: 42 },
-  ];
-
-
-
+const rows = [
+  { id: 1, currency: "ETH", amt: 0.359098 },
+  { id: 2, currency: "wETH", amt: 42 },
+];
 
 export const Wallet = () => {
-
   // const [contractAddress,setContractAddress]= useState("")
-  const [activateIsClicked, setActivateIsClicked]=useState(false)
+  const [activateIsClicked, setActivateIsClicked] = useState(false);
+  const userName = localStorage.getItem("username");
 
   // const setShowModal = useModalState((state) => state.setShowModal)
   // const { showModal } = useModalState((state) => ({ showModal: state.showModal }))
 
-  const setDisableButton = useActiveButtonState((state) => state.setDisableButton) 
-  const { disableButton } = useActiveButtonState((state) => ({ disableButton: state.disableButton }))
+  const setDisableButton = useActiveButtonState(
+    (state) => state.setDisableButton
+  );
+  const { disableButton } = useActiveButtonState((state) => ({
+    disableButton: state.disableButton,
+  }));
 
-  const setContractAddress= useContractAddress((state) => state.setContractAddress) 
-  const { contractAddress } = useContractAddress((state) => ({ contractAddress: state.contractAddress }))
+  const setContractAddress = useContractAddress(
+    (state) => state.setContractAddress
+  );
+  const { contractAddress } = useContractAddress((state) => ({
+    contractAddress: state.contractAddress,
+  }));
 
-  const { data: balance, refetch, isLoading , isSuccess} = useGetBalance({
-
+  const {
+    data: balance,
+    refetch,
+    isLoading,
+    isSuccess,
+  } = useGetBalance({
     cacheTime: 3600000,
 
     staleTime: 3600000,
-
   });
 
   const activateContract = async()=>{
@@ -81,20 +92,27 @@ export const Wallet = () => {
     await activateWallet(walletOwnerPublicKey, walletAddress);
 
     // TODO - POST AXIOS to CREATE IDENTITY passing args
-    const contractAddressResponse = await axios.get('https://dummyjson.com/products/1')
-    console.log("activate contract address clicked", contractAddressResponse)
+  //   const contractAddressResponse = await axios.get('https://dummyjson.com/products/1')
+  //   console.log("activate contract address clicked", contractAddressResponse)
+  // const activateContract = async () => {
+  //   const contractAddressResponse = await axios.get(
+  //     "https://dummyjson.com/products/1"
+  //   );
+  //   console.log("activate contract address clicked", contractAddressResponse);
 
     // TODO : this is moved to handleOTP Click
     // setContractAddress(walletAddress)
     // setShowModal({ showModal:true })
 
-    setContractAddress({contractAddress: contractAddressResponse.data.description})
+    // setContractAddress({
+    //   contractAddress: contractAddressResponse.data.description,
+    // });
 
-    setDisableButton({disableButton:true})
+    setDisableButton({ disableButton: true });
 
     refetch();
-    console.log("balance is", balance)
-    setActivateIsClicked(true)
+    console.log("balance is", balance);
+    setActivateIsClicked(true);
     // localStorage.setItem('contract', contractAddress.data.description)
   };
 
@@ -107,41 +125,50 @@ export const Wallet = () => {
       }}
     >
       {/* <Box sx={{ display: "flex", flexDirection: "column" }}> */}
-        <CardContent>
+      <CardContent>
+        <Grid container>
+          <Grid item xs={8}>
+            <Typography component="div" variant="h5">
+              Hi, {userName}
+            </Typography>
+          </Grid>
+          <Grid item xs={4} display="flex" justifyContent="flex-end">
+            <Button
+              variant="contained"
+              color="success"
+              onClick={activateContract}
+              disabled={disableButton}
+            >
+              Activate
+            </Button>
+          </Grid>
 
-          <Grid container>
-            <Grid item xs={8}>
-              <Typography component="div" variant="h5">
-                Contract
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Button variant="contained" color="success" onClick={activateContract} disabled={disableButton}>
-                Activate 
-              </Button>
-            </Grid>
+          <Grid item xs={12}>
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
+              {/* xxx-fs3434sw-wswed33443 */}
+              {contractAddress}
+            </Typography>
+          </Grid>
 
-            <Grid item xs={12}>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-              >
-                {/* xxx-fs3434sw-wswed33443 */}
-                {contractAddress}
-              </Typography>
-            </Grid>
-
-            <Grid item xs={2}>
-              <Button variant="contained" >
-                Send
-              </Button>
+          <Grid item xs={2}>
+            <Button
+              variant="contained"
+              style={{ background: "#F2AA4CFF", color: "white" }}
+            >
+              Send
+            </Button>
           </Grid>
           <Grid item xs={2}>
-              <Button variant="contained" >
-                Receive
-              </Button>
-
+            <Button
+              variant="contained"
+              style={{ background: "#F2AA4CFF", color: "white" }}
+            >
+              Receive
+            </Button>
           </Grid>
           {/* <Grid item xs={4} display="flex" justifyContent="flex-end">
             <Button
@@ -163,7 +190,7 @@ export const Wallet = () => {
               {contractAddress}
             </Typography>
           </Grid> */}
-          
+
           {/* <Grid item xs={2} style={{ marginTop: "1rem" }}>
             <Button style={{ background: "#F2AA4CFF", color: "white" }}>
               Send
@@ -177,21 +204,23 @@ export const Wallet = () => {
         </Grid>
         <Grid item xs={12}>
           <div style={{ height: 245, width: "100%", paddingTop: "2rem" }}>
-          {isSuccess && disableButton &&<DataGrid
-              sx={{
-                borderLeft: "none",
-                borderRight: "none",
-                borderBottom: "none",
-              }}
-              rows={balance.products}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              // options={{
-              //   paging: false
-              // }}
-              hideFooterPagination={true}
-            />}
+            {isSuccess && disableButton && (
+              <DataGrid
+                sx={{
+                  borderLeft: "none",
+                  borderRight: "none",
+                  borderBottom: "none",
+                }}
+                rows={balance.products}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                // options={{
+                //   paging: false
+                // }}
+                hideFooterPagination={true}
+              />
+            )}
           </div>
         </Grid>
       </CardContent>
@@ -202,29 +231,3 @@ export const Wallet = () => {
 };
 
 
-// rows={rows}
-//balance.products
-
-{/* 
-///herereer
-
-          <div style={{ height: 220, width: '100%' , paddingTop: "2rem"}}>
-      {isSuccess && activateIsClicked &&<DataGrid
-        
-        sx={{
-           
-            borderLeft: "none",
-            borderRight: "none",
-            borderBottom: "none"
-        }}
-        rows={balance.products}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        // options={{
-        //   paging: false
-        // }}
-        hideFooterPagination={true}
-      />}
-    </div>
-    //herer */}

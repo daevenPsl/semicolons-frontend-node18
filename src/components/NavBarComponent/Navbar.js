@@ -69,16 +69,16 @@ const Navbar = () => {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, textTransform: "capitalize" }}
+            sx={{ flexGrow: 1, textTransform: "uppercase", fontWeight: "bold",fontSize: 22, marginLeft:"-20px" }}
           >
-            Hi, {userName}
+            AatmaNirbhar Wallet
           </Typography>
 
-          <Typography
+          {/* <Typography
             sx={{ mx: "220px", textTransform: "uppercase", fontWeight: "bold",fontSize: 22 }}
           >
             AatmaNirbhar
-          </Typography>
+          </Typography> */}
 
           <Button
             className={classes.button}
