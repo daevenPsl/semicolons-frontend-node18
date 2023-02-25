@@ -36,12 +36,20 @@ import styles from "./wallet.module.css";
 //   ];
 
 const columns = [
-  { field: "brand", headerName: "Currency", width: 150 },
+  {
+    field: "brand",
+    headerName: "Currency",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    width: 198,
+  },
   {
     field: "discountPercentage",
     headerName: "Amount",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
     type: "number",
-    width: 360,
+    width: 377,
   },
 ];
 
@@ -121,16 +129,6 @@ export const Wallet = () => {
               Hi, {userName}
             </Typography>
           </Grid>
-          <Grid item xs={4} display="flex" justifyContent="flex-end">
-            <Button
-              variant="contained"
-              color="success"
-              onClick={activateContract}
-              disabled={disableButton}
-            >
-              Activate
-            </Button>
-          </Grid>
 
           <Grid item xs={12}>
             <Typography
@@ -146,7 +144,7 @@ export const Wallet = () => {
           <Grid item xs={2}>
             <Button
               variant="contained"
-              style={{ background: "#F2AA4CFF", color: "white" }}
+              style={{ background: "#05409e", color: "white" }}
               sx={{ width: "90px" }}
             >
               Send
@@ -155,9 +153,23 @@ export const Wallet = () => {
           <Grid item xs={2}>
             <Button
               variant="contained"
-              style={{ background: "#F2AA4CFF", color: "white" }}
+              style={{ background: "#05409e", color: "white" }}
             >
               Receive
+            </Button>
+          </Grid>
+          <Grid item xs={4}>
+            <Button
+              variant="contained"
+              style={{
+                background: "#05409e",
+                color: "white",
+                marginLeft: "280px",
+              }}
+              onClick={activateContract}
+              disabled={disableButton}
+            >
+              Activate
             </Button>
           </Grid>
           {/* <Grid item xs={4} display="flex" justifyContent="flex-end">
@@ -197,6 +209,11 @@ export const Wallet = () => {
             {isSuccess && (
               <DataGrid
                 sx={{
+                  "& .super-app-theme--header": {
+                    backgroundColor: "#05409e",
+                    textTransform: "uppercase",
+                    fontSize: "15px",
+                  },
                   borderLeft: "none",
                   borderRight: "none",
                   borderBottom: "none",

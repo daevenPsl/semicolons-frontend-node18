@@ -28,7 +28,7 @@ export const BalanceService = {
     });
 
 
-    return axios.get('https://dummyjson.com/products?limit=10').then((res) => res.data);
+    return axios.get('https://dummyjson.com/products?limit=2').then((res) => res.data);
 
     
   },

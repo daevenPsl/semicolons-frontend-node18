@@ -26,6 +26,7 @@ import Checkbox from "@mui/material/Checkbox";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useGetData } from "../../hooks/useGetData";
+import { useAddClaimButtonState } from "../../store/addClaimButtonStore";
 // const columns = [
 //   {
 //     field: "key",
@@ -51,7 +52,7 @@ import { useGetData } from "../../hooks/useGetData";
 // ];
 const columns = [
   {
-    field: "brand",
+    field: "title",
     headerName: "Keys",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
@@ -65,8 +66,8 @@ const columns = [
     width: 220,
   },
   {
-    field: "brand",
-    headerName: "Type",
+    field: "category",
+    headerName: "Category",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 192,
@@ -77,47 +78,58 @@ const rows = [
   { id: 2, key: "1b2", purpose: "Purpose2", type: "Type2" },
   { id: 3, key: "1b3", purpose: "Purpose3", type: "Type3" },
 ];
-const columns1 = [
-  {
-    field: "issuer",
-    headerName: "Issuer",
-    headerClassName: "super-app-theme--header",
-    headerAlign: "center",
-    width: 187,
-  },
-  {
-    field: "claimType",
-    headerName: "Claim Type",
-    headerClassName: "super-app-theme--header",
-    headerAlign: "center",
-    width: 220,
-  },
-  {
-    field: "actions",
-    headerName: "Actions",
-    headerClassName: "super-app-theme--header",
-    headerAlign: "center",
-    renderCell: (cellValues) => {
-      return (
-        <Button
-          style={{ background: "#F2AA4CFF", color: "white" }}
-          /* onClick={(event) => {
-            handleClick(event, cellValues);
-          }} */
-        >
-          Add Claim
-        </Button>
-      );
-    },
-    width: 192,
-  },
-];
+
 const rows1 = [
   { id: 1, services: "Name1", issuer: "Issuer1", claimType: "Type1" },
-  { id: 2, services: "Name2", issuer: "Issuer2", claimType: "Type2" },
-  { id: 3, services: "Name3", issuer: "Issuer3", claimType: "Type3" },
 ];
 export function FormDialog() {
+  const columns1 = [
+    {
+      field: "issuer",
+      headerName: "Issuer",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      width: 187,
+    },
+    {
+      field: "claimType",
+      headerName: "Claim Type",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      width: 220,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return addClaim ? (
+          <Button
+            style={{ background: "#05409e", color: "white" }}
+            onClick={handleAddClaim}
+          >
+            Add Claim
+          </Button>
+        ) : (
+          <h3>Verified</h3>
+        );
+      },
+      width: 192,
+    },
+  ];
+
+  const setAddClaimButton = useAddClaimButtonState(
+    (state) => state.setAddClaimButton
+  );
+
+  const { addClaim } = useAddClaimButtonState((state) => ({
+    addClaim: state.addClaim,
+  }));
+
+  const handleAddClaim = () => {
+    setAddClaimButton(false);
+  };
   const [open, setOpen] = React.useState(false);
   const [showTable, setShowTable] = React.useState(false);
   const [deploy, setDeploy] = React.useState(true);
@@ -139,10 +151,15 @@ export function FormDialog() {
     handleDeploy();
   };
   const [alignment, setAlignment] = React.useState("left");
-  const { data: tableData, refetch: refetchTables, isLoading: isLoadingTables , isSuccess: isSuccessTable}=useGetData({
+  const {
+    data: tableData,
+    refetch: refetchTables,
+    isLoading: isLoadingTables,
+    isSuccess: isSuccessTable,
+  } = useGetData({
     cacheTime: 3600000,
     staleTime: 3600000,
-  })
+  });
   const handleAlignment = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
@@ -152,7 +169,7 @@ export function FormDialog() {
         <Button
           sx={{ mt: -2.7, mb: 2 }}
           deploy={deploy}
-          style={{ background: "#F2AA4CFF", color: "white" }}
+          style={{ background: "#05409e", color: "white" }}
           onClick={handleClickOpen}
         >
           Request Claim
@@ -217,37 +234,49 @@ export function FormDialog() {
           </ToggleButtonGroup>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleMultipleFunctions}>Submit</Button>
+          <Button
+            onClick={handleClose}
+            style={{ background: "#05409e", color: "white" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleMultipleFunctions}
+            style={{ background: "#05409e", color: "white" }}
+          >
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
       <Grid item xs={12}>
         <>
           <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
-            <div style={{ height: 213, width: "100%" }}>
-              {isSuccessTable && <DataGrid
-                sx={{
-                  "& .super-app-theme--header": {
-                    backgroundColor: "#F2AA4CFF",
-                    textTransform: "uppercase",
-                    fontSize: "15px",
-                  },
-                }}
-                rows={tableData.products}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                hideFooterPagination={true}
-                hideFooter={true}
-              />}
+            <div style={{ height: 161, width: "100%" }}>
+              {isSuccessTable && (
+                <DataGrid
+                  sx={{
+                    "& .super-app-theme--header": {
+                      backgroundColor: "#05409e",
+                      textTransform: "uppercase",
+                      fontSize: "15px",
+                    },
+                  }}
+                  rows={tableData.products}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  hideFooterPagination={true}
+                  hideFooter={true}
+                />
+              )}
             </div>
           </Grid>
           <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
-            <div style={{ height: 213, width: "100%", marginTop: "1rem" }}>
+            <div style={{ height: 109, width: "100%", marginTop: "1rem" }}>
               <DataGrid
                 sx={{
                   "& .super-app-theme--header": {
-                    backgroundColor: "#F2AA4CFF",
+                    backgroundColor: "#05409e",
                     textTransform: "uppercase",
                     fontSize: "15px",
                   },

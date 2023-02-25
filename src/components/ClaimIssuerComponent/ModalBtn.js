@@ -26,6 +26,7 @@ import Select from "@mui/material/Select";
 import axios from "axios";
 import { ButtonGroup, ToggleButton } from "@material-ui/core";
 import { useGetData } from "../../hooks/useGetData";
+import { useAddClaimButtonState } from "../../store/addClaimButtonStore";
 
 // const columns = [
 //   {
@@ -53,7 +54,7 @@ import { useGetData } from "../../hooks/useGetData";
 
 const columns = [
   {
-    field: "brand",
+    field: "title",
     headerName: "Keys",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
@@ -67,63 +68,72 @@ const columns = [
     width: 220,
   },
   {
-    field: "brand",
-    headerName: "Type",
+    field: "category",
+    headerName: "Category",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 192,
   },
 ];
-
 const rows = [
   { id: 1, key: "1b1", purpose: "Purpose1", type: "Type1" },
   { id: 2, key: "1b2", purpose: "Purpose2", type: "Type2" },
   { id: 3, key: "1b3", purpose: "Purpose3", type: "Type3" },
 ];
 
-const columns1 = [
-  {
-    field: "issuer",
-    headerName: "Issuer",
-    headerClassName: "super-app-theme--header",
-    headerAlign: "center",
-    width: 187,
-  },
-  {
-    field: "claimType",
-    headerName: "Claim Type",
-    headerClassName: "super-app-theme--header",
-    headerAlign: "center",
-    width: 220,
-  },
-  {
-    field: "actions",
-    headerName: "Actions",
-    headerClassName: "super-app-theme--header",
-    headerAlign: "center",
-    renderCell: (cellValues) => {
-      return (
-        <Button
-          style={{ background: "#F2AA4CFF", color: "white" }}
-          /* onClick={(event) => {
-            handleClick(event, cellValues);
-          }} */
-        >
-          Add Claim
-        </Button>
-      );
-    },
-    width: 192,
-  },
-];
-
 const rows1 = [
   { id: 1, services: "Name1", issuer: "Issuer1", claimType: "Type1" },
-  { id: 2, services: "Name2", issuer: "Issuer2", claimType: "Type2" },
-  { id: 3, services: "Name3", issuer: "Issuer3", claimType: "Type3" },
 ];
 
 export function FormDialog() {
+  const columns1 = [
+    {
+      field: "issuer",
+      headerName: "Issuer",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      width: 187,
+    },
+    {
+      field: "claimType",
+      headerName: "Claim Type",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      width: 220,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return addClaim ? (
+          <Button
+            style={{ background: "#05409e", color: "white" }}
+            onClick={handleAddClaim}
+          >
+            Add Claim
+          </Button>
+        ) : (
+          <h3>Verified</h3>
+        );
+      },
+      width: 192,
+    },
+  ];
+
+  const setAddClaimButton = useAddClaimButtonState(
+    (state) => state.setAddClaimButton
+  );
+
+  const { addClaim } = useAddClaimButtonState((state) => ({
+    addClaim: state.addClaim,
+  }));
+
+  const handleAddClaim = () => {
+    setAddClaimButton(false);
+  };
+
   const [open, setOpen] = React.useState(false);
   const [showTable, setShowTable] = React.useState(false);
   const [deploy, setDeploy] = React.useState(true);
@@ -199,7 +209,7 @@ export function FormDialog() {
         <Button
           sx={{ mt: -2.7 }}
           deploy={disableDeployButton}
-          style={{ background: "#F2AA4CFF", color: "white" }}
+          style={{ background: "#05409e", color: "white" }}
           onClick={handleFunctionsAtModal}
         >
           Get Signing requests
@@ -241,8 +251,18 @@ export function FormDialog() {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleMultipleFunctions}>Submit</Button>
+          <Button
+            onClick={handleClose}
+            style={{ background: "#05409e", color: "white" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleMultipleFunctions}
+            style={{ background: "#05409e", color: "white" }}
+          >
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -252,14 +272,14 @@ export function FormDialog() {
             <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
               <div
                 style={{
-                  height: 213,
+                  height: 161,
                   width: "100%",
                 }}
               >
                 <DataGrid
                   sx={{
                     "& .super-app-theme--header": {
-                      backgroundColor: "#F2AA4CFF",
+                      backgroundColor: "#05409e",
                       textTransform: "uppercase",
                       fontSize: "15px",
                     },
@@ -275,11 +295,11 @@ export function FormDialog() {
             </Grid>
 
             <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
-              <div style={{ height: 213, width: "100%", marginTop: "1rem" }}>
+              <div style={{ height: 109, width: "100%", marginTop: "1rem" }}>
                 <DataGrid
                   sx={{
                     "& .super-app-theme--header": {
-                      backgroundColor: "#F2AA4CFF",
+                      backgroundColor: "#05409e",
                       textTransform: "uppercase",
                       fontSize: "15px",
                     },
@@ -307,7 +327,7 @@ export function FormDialog() {
               <Card
                 style={{
                   padding: "0.5rem",
-                  background: "#F2AA4CFF",
+                  background: "#05409e",
                   color: "white",
                 }}
               >

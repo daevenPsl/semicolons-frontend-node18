@@ -116,23 +116,33 @@ export default function LoginComponent() {
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 12,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: -2, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ m: -2, bgcolor: "#05409e", color: "white" }}>
               <VpnKeyIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" sx={{mt:3}}>
-              Sign in
+            <Typography
+              component="h5"
+              variant="h5"
+              sx={{
+                mt: 4,
+                mb: -1,
+                width: "280px",
+                fontSize: "20px",
+                textAlign: "center",
+              }}
+            >
+              AATMANIRBHAR WALLET
             </Typography>
             <Box
               component="form"
               onSubmit={handleSubmit}
               noValidate
-              sx={{ mt: 1 }}
+              sx={{ mt: 1, width: "280px" }}
             >
               <TextField
                 margin="normal"
@@ -142,6 +152,7 @@ export default function LoginComponent() {
                 label="User Name"
                 name="username"
                 autoFocus
+                size="small"
               />
 
               <TextField
@@ -152,7 +163,8 @@ export default function LoginComponent() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                autoFocus
+                size="small"
+                //autoFocus
               />
               <TextField
                 margin="normal"
@@ -163,6 +175,7 @@ export default function LoginComponent() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                size="small"
               />
 
               <InputLabel id="demo-simple-select-label">Role</InputLabel>
@@ -174,8 +187,9 @@ export default function LoginComponent() {
                 label="Role"
                 onChange={handleRoleChange}
                 fullWidth
+                size="small"
               >
-                <MenuItem value="1">Choose the Role</MenuItem>                
+                <MenuItem value="1">Choose the Role</MenuItem>
                 <MenuItem value="identity">Identity</MenuItem>
                 <MenuItem value="claim-issuer">Claim Issuer</MenuItem>
                 <MenuItem value="claim-verifier">Claim Verifier</MenuItem>
@@ -187,16 +201,24 @@ export default function LoginComponent() {
               <Button
                 type="submit"
                 fullWidth
-                variant="contained"
+                style={{
+                  background: "#05409e",
+                  color: "white",
+                }}
                 sx={{ mt: 3, mb: 2 }}
+                size="small"
               >
                 Sign In
               </Button>
 
               <Button
                 fullWidth
-                variant="contained"
+                style={{
+                  background: "#05409e",
+                  color: "white",
+                }}
                 onClick={handleRecoverClick}
+                size="small"
               >
                 Recover
               </Button>
