@@ -43,4 +43,19 @@ export default class APIService {
         });
     });
   }
+
+  async deleteRequest(headers, apiPathURL, data) {
+    return new Promise((resolve, reject) => {
+      return this.apiServiceInstance
+        .delete(apiPathURL, data, {
+          headers,
+        })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
 }
