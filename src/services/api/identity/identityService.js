@@ -26,15 +26,23 @@ export const getIdentity = async (walletAddress) => {
 };
 
 export const createIdentity = async (username, email, walletAddress, role) => {
-  console.log("tested data ---------------------------")
-  let ROLE = role.toUpperCase();
+  let ROLE = null;
+  if (role === "identity") {
+    ROLE = "Identity";
+  }
+  if (role === "claim-issuer") {
+    ROLE = "Issuer";
+  }
+  if (role === "claim-verifier") {
+    ROLE = "Verifier";
+  }
   try {
     let headers = {};
     let data = {
       username,
       email,
       walletAddress,
-      ROLE,
+      role: ROLE,
     };
     let response = await instance.postRequest(
       headers,

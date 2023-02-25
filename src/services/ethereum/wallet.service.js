@@ -1,9 +1,18 @@
 import * as ethers from "ethers";
 import constants from "../utils/constants.js";
 import claimHolderABI from "./abis/ClaimHolder.json";
+import verifierABI from "./abis/ClaimVerifier.json";
+import { getClaimIssuer } from "../api/identity/identityService";
 
+const ClaimHolder_factory = new ethers.ContractFactory(
+  claimHolderABI.abi,
+  claimHolderABI.bytecode
+);
 
-const ClaimHolder_factory = new ethers.ContractFactory(claimHolderABI.abi, claimHolderABI.bytecode);
+const Verifier_factory = new ethers.ContractFactory(
+  verifierABI.abi,
+  verifierABI.bytecode
+);
 
 const issuerManagementAccount = constants.PROVIDER.getSigner(0);
 const issuerClaimAccount = constants.PROVIDER.getSigner(1);
@@ -18,18 +27,35 @@ export async function createIssuerAccount() {
   return await createWalletForSigner(issuerManagementAccount);
 }
 
+export async function createVerifierAccount() {
+  return await createWalletForVerifier(verifierAccount);
+}
+
+export async function createWalletForVerifier(signer) {
+  const response = await getClaimIssuer();
+  const trustedIssuer = response[0]["walletAddress"];
+  console.log("truested isssuer   ================= ------------------->" + trustedIssuer);
+  const contract = await Verifier_factory.connect(signer)
+    .deploy(trustedIssuer)
+    .then((c) => c.deployed());
+  console.log("verifier  deployed for:", await signer.getAddress());
+  console.log("Contract address:", contract.address);
+  return contract.address;
+}
+
 export async function createWalletForSigner(signer) {
-  const contract = await ClaimHolder_factory
-    .connect(signer)
+  const contract = await ClaimHolder_factory.connect(signer)
     .deploy()
-    .then((c) => c.deployed()); 
+    .then((c) => c.deployed());
   console.log("Claim holder deployed for:", await signer.getAddress());
   console.log("Contract address:", contract.address);
   return contract.address;
 }
 
 export async function addKey(signer, walletContractAddress) {
-  const contract = ClaimHolder_factory.attach(walletContractAddress).connect(signer);
+  const contract = ClaimHolder_factory.attach(walletContractAddress).connect(
+    signer
+  );
   const issuerClaimKeyHash = ethers.utils.keccak256(signer.address);
   await contract
     .connect(signer)
@@ -40,12 +66,19 @@ export async function addKey(signer, walletContractAddress) {
       {
         gasLimit: 4612388,
       }
-    ).then(tx => tx.wait());
+    )
+    .then((tx) => tx.wait());
 }
 
 export async function signClaim(signer, identityWalletAddress, claimData) {
-  const claimDataInHex = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(claimData));
-  const claimDataToSign = [identityWalletAddress, constants.CLAIM_TYPES.KYC, claimDataInHex];
+  const claimDataInHex = ethers.utils.hexlify(
+    ethers.utils.toUtf8Bytes(claimData)
+  );
+  const claimDataToSign = [
+    identityWalletAddress,
+    constants.CLAIM_TYPES.KYC,
+    claimDataInHex,
+  ];
   const claimDataToSignBytes = ethers.utils.solidityPack(
     ["address", "uint256", "bytes"],
     claimDataToSign
@@ -61,7 +94,7 @@ export async function signClaim(signer, identityWalletAddress, claimData) {
     signature: signature,
     claimData: claimDataInHex,
     uri: "https://www.example.com/issuer/",
-  }
+  };
 }
 
 export async function addClaim(identityWalletAddress, signer, claim) {
@@ -83,4 +116,3 @@ export async function addClaim(identityWalletAddress, signer, claim) {
     })
     .then((tx) => tx.wait());
 }
-

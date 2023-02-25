@@ -6,10 +6,10 @@ export async function signup(role) {
     return walletService.createIdentityAccount();
   }
   if (role === "claim-issuer") {
-    return;
+    return walletService.createIssuerAccount();
   }
   if (role === "claim-verifier") {
-    return;
+    return walletService.createVerifierAccount();
   }
   throw Error("Invalid role");
 }
