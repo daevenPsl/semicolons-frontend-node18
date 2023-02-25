@@ -25,7 +25,26 @@ export async function createIdentityAccount() {
 }
 
 export async function createIssuerAccount() {
-  return await createWalletForSigner(issuerManagementAccount);
+  const issuerWalletAddress = await createWalletForSigner(
+    issuerManagementAccount
+  );
+  console.log("Created issuer claim holder");
+  const issuerClaimKeyHash = ethers.utils.keccak256(
+    await issuerClaimAccount.getAddress()
+  );
+  await ClaimHolder_factory.attach(issuerWalletAddress)
+    .connect(issuerManagementAccount)
+    .addKey(
+      issuerClaimKeyHash,
+      constants.KEY_PURPOSES.CLAIM_SIGNER,
+      constants.KEY_TYPES.ECDSA,
+      {
+        gasLimit: 4612388,
+      }
+    )
+    .then((tx) => tx.wait());
+  console.log("Added claims key to issuer claim holder");
+  return issuerWalletAddress;
 }
 
 export async function createVerifierAccount() {
