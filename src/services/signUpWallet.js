@@ -1,10 +1,9 @@
-const ethers = require('ethers');
-const ethersUtils = require('ethers/lib/utils');
-const constants = require('./utils/constants');
-const soulWalletLibrary = require('soul-wallet-lib');
+import * as ethers from "ethers";
+import { SoulWalletLib } from "soul-wallet-lib";
+import * as constants from "./utils/constants.js";
 
-const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545/");
-const initializedSoulWalletLib = new soulWalletLibrary(constants.CONFIG.ENTRYPOINT_CONTRACT_ADDRESS);
+// const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545/");
+const initializedSoulWalletLib = new SoulWalletLib(constants.CONFIG.ENTRYPOINT_CONTRACT_ADDRESS);
 
 export async function calculateWalletAddress() {
 
