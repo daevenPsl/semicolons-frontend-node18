@@ -83,24 +83,36 @@ const rows = [
 
 const columns1 = [
   {
-    field: "services",
-    headerName: "Signer Services",
+    field: "issuer",
+    headerName: "Issuer",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 187,
-  },
-  {
-    field: "issuer",
-    headerName: "Issuer Icon",
-    headerClassName: "super-app-theme--header",
-    headerAlign: "center",
-    width: 220,
   },
   {
     field: "claimType",
     headerName: "Claim Type",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
+    width: 220,
+  },
+  {
+    field: "actions",
+    headerName: "Actions",
+    headerClassName: "super-app-theme--header",
+    headerAlign: "center",
+    renderCell: (cellValues) => {
+      return (
+        <Button
+          style={{ background: "#F2AA4CFF", color: "white" }}
+          /* onClick={(event) => {
+            handleClick(event, cellValues);
+          }} */
+        >
+          Add Claim
+        </Button>
+      );
+    },
     width: 192,
   },
 ];
@@ -126,10 +138,15 @@ export function FormDialog() {
     }
   };
 
-  const { data: tableData, refetch: refetchTables, isLoading: isLoadingTables , isSuccess: isSuccessTable}=useGetData({
+  const {
+    data: tableData,
+    refetch: refetchTables,
+    isLoading: isLoadingTables,
+    isSuccess: isSuccessTable,
+  } = useGetData({
     cacheTime: 3600000,
     staleTime: 3600000,
-  })
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -149,6 +166,7 @@ export function FormDialog() {
   };
 
   const handleMultipleFunctions = () => {
+    refetchTables();
     handleClose();
     handleTable();
     handleDeploy();

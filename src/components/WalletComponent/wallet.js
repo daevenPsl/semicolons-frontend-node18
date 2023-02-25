@@ -21,7 +21,7 @@ import {
 } from "../../store/activateContractStore";
 import { useGetBalance } from "../../hooks/useGetBalance";
 import { useGetData } from "../../hooks/useGetData";
-
+import styles from "./wallet.module.css";
 
 // const columns = [
 
@@ -57,7 +57,7 @@ export const Wallet = () => {
 
   // const setShowModal = useModalState((state) => state.setShowModal)
   // const { showModal } = useModalState((state) => ({ showModal: state.showModal }))
-
+  const { sendButton } = styles;
   const setDisableButton = useActiveButtonState(
     (state) => state.setDisableButton
   );
@@ -147,6 +147,7 @@ export const Wallet = () => {
             <Button
               variant="contained"
               style={{ background: "#F2AA4CFF", color: "white" }}
+              sx={{ width: "90px" }}
             >
               Send
             </Button>
@@ -193,7 +194,7 @@ export const Wallet = () => {
         </Grid>
         <Grid item xs={12}>
           <div style={{ height: 245, width: "100%", paddingTop: "2rem" }}>
-            {isSuccess && disableButton && (
+            {isSuccess && (
               <DataGrid
                 sx={{
                   borderLeft: "none",
@@ -221,6 +222,7 @@ export const Wallet = () => {
 
 // rows={rows}
 //balance.products
+// {isSuccess && disableButton && ( 197
 
 {
   /* 

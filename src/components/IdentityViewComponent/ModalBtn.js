@@ -25,58 +25,72 @@ import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-
+import { useGetData } from "../../hooks/useGetData";
+// const columns = [
+//   {
+//     field: "key",
+//     headerName: "Keys",
+//     headerClassName: "super-app-theme--header",
+//     headerAlign: "center",
+//     width: 187,
+//   },
+//   {
+//     field: "purpose",
+//     headerName: "Purpose",
+//     headerClassName: "super-app-theme--header",
+//     headerAlign: "center",
+//     width: 220,
+//   },
+//   {
+//     field: "type",
+//     headerName: "Type",
+//     headerClassName: "super-app-theme--header",
+//     headerAlign: "center",
+//     width: 185,
+//   },
+// ];
 const columns = [
   {
-    field: "key",
+    field: "brand",
     headerName: "Keys",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 187,
   },
   {
-    field: "purpose",
+    field: "brand",
     headerName: "Purpose",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 220,
   },
   {
-    field: "type",
+    field: "brand",
     headerName: "Type",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
-    width: 185,
+    width: 192,
   },
 ];
-
 const rows = [
   { id: 1, key: "1b1", purpose: "Purpose1", type: "Type1" },
   { id: 2, key: "1b2", purpose: "Purpose2", type: "Type2" },
   { id: 3, key: "1b3", purpose: "Purpose3", type: "Type3" },
 ];
-
 const columns1 = [
   {
-    field: "services",
-    headerName: "Signer Services",
-    headerClassName: "super-app-theme--header",
-    headerAlign: "center",
-    width: 170,
-  },
-  {
     field: "issuer",
-    headerName: "Issuer Icon",
+    headerName: "Issuer",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
-    width: 140,
+    width: 187,
   },
   {
     field: "claimType",
     headerName: "Claim Type",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
-    width: 140,
+    width: 220,
   },
   {
     field: "actions",
@@ -95,49 +109,43 @@ const columns1 = [
         </Button>
       );
     },
-    width: 142,
+    width: 192,
   },
 ];
-
 const rows1 = [
   { id: 1, services: "Name1", issuer: "Issuer1", claimType: "Type1" },
   { id: 2, services: "Name2", issuer: "Issuer2", claimType: "Type2" },
   { id: 3, services: "Name3", issuer: "Issuer3", claimType: "Type3" },
 ];
-
 export function FormDialog() {
   const [open, setOpen] = React.useState(false);
   const [showTable, setShowTable] = React.useState(false);
   const [deploy, setDeploy] = React.useState(true);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleTable = () => {
     setShowTable(true);
   };
-
   const handleDeploy = () => {
     setDeploy(false);
   };
-
   const handleMultipleFunctions = () => {
     handleClose();
     handleTable();
     handleDeploy();
   };
-
   const [alignment, setAlignment] = React.useState("left");
-
+  const { data: tableData, refetch: refetchTables, isLoading: isLoadingTables , isSuccess: isSuccessTable}=useGetData({
+    cacheTime: 3600000,
+    staleTime: 3600000,
+  })
   const handleAlignment = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
-
   return (
     <div>
       {deploy ? (
@@ -213,12 +221,11 @@ export function FormDialog() {
           <Button onClick={handleMultipleFunctions}>Submit</Button>
         </DialogActions>
       </Dialog>
-
       <Grid item xs={12}>
         <>
           <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
             <div style={{ height: 213, width: "100%" }}>
-              <DataGrid
+              {isSuccessTable && <DataGrid
                 sx={{
                   "& .super-app-theme--header": {
                     backgroundColor: "#F2AA4CFF",
@@ -226,16 +233,15 @@ export function FormDialog() {
                     fontSize: "15px",
                   },
                 }}
-                rows={rows}
+                rows={tableData.products}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
                 hideFooterPagination={true}
                 hideFooter={true}
-              />
+              />}
             </div>
           </Grid>
-
           <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
             <div style={{ height: 213, width: "100%", marginTop: "1rem" }}>
               <DataGrid
