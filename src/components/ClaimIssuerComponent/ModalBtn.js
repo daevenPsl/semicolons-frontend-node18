@@ -27,7 +27,6 @@ import axios from "axios";
 import { ButtonGroup, ToggleButton } from "@material-ui/core";
 import { useGetData } from "../../hooks/useGetData";
 import { useAddClaimButtonState } from "../../store/addClaimButtonStore";
-
 // const columns = [
 //   {
 //     field: "key",
@@ -51,24 +50,23 @@ import { useAddClaimButtonState } from "../../store/addClaimButtonStore";
 //     width: 192,
 //   },
 // ];
-
 const columns = [
   {
-    field: "title",
+    field: "key",
     headerName: "Keys",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 187,
   },
   {
-    field: "brand",
+    field: "purpose",
     headerName: "Purpose",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 220,
   },
   {
-    field: "category",
+    field: "type",
     headerName: "Category",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
@@ -76,15 +74,17 @@ const columns = [
   },
 ];
 const rows = [
-  { id: 1, key: "1b1", purpose: "Purpose1", type: "Type1" },
-  { id: 2, key: "1b2", purpose: "Purpose2", type: "Type2" },
-  { id: 3, key: "1b3", purpose: "Purpose3", type: "Type3" },
+  {
+    id: 1,
+    key: "0x1ebaa930b8e9130423c183bf38b0564b0103180b7dad301013b18e59880541ae",
+    purpose: "MANAGEMENT",
+    type: "ECDSA",
+  },
 ];
-
 const rows1 = [
-  { id: 1, services: "Name1", issuer: "Issuer1", claimType: "Type1" },
+  { id: 1, services: "Name1", issuer: "KYC Provider" },
+  { id: 2, services: "Name1", issuer: "Google" },
 ];
-
 export function FormDialog() {
   const columns1 = [
     {
@@ -94,52 +94,21 @@ export function FormDialog() {
       headerAlign: "center",
       width: 187,
     },
-    {
-      field: "claimType",
-      headerName: "Claim Type",
-      headerClassName: "super-app-theme--header",
-      headerAlign: "center",
-      width: 220,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      headerClassName: "super-app-theme--header",
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return addClaim ? (
-          <Button
-            style={{ background: "#05409e", color: "white" }}
-            onClick={handleAddClaim}
-          >
-            Add Claim
-          </Button>
-        ) : (
-          <h3>Verified</h3>
-        );
-      },
-      width: 192,
-    },
   ];
-
   const setAddClaimButton = useAddClaimButtonState(
     (state) => state.setAddClaimButton
   );
-
   const { addClaim } = useAddClaimButtonState((state) => ({
     addClaim: state.addClaim,
   }));
-
   const handleAddClaim = () => {
     setAddClaimButton(false);
   };
-
   const [open, setOpen] = React.useState(false);
   const [showTable, setShowTable] = React.useState(false);
   const [deploy, setDeploy] = React.useState(true);
   const [selectedOption, setSelectedOption] = React.useState("");
   const [showTextField, setShowTextField] = React.useState(false);
-
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value);
     console.log(event.target.value);
@@ -147,8 +116,7 @@ export function FormDialog() {
       setShowTextField(true);
     }
   };
-
-  const {
+  /* const {
     data: tableData,
     refetch: refetchTables,
     isLoading: isLoadingTables,
@@ -156,74 +124,59 @@ export function FormDialog() {
   } = useGetData({
     cacheTime: 3600000,
     staleTime: 3600000,
-  });
-
+  }); */
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleTable = () => {
     setShowTable(true);
   };
-
   const handleDeploy = () => {
     // setDeploy(false);
     setDisableDeployButton(false);
   };
-
   const handleMultipleFunctions = () => {
-    refetchTables();
-    handleClose();
-    handleTable();
-    handleDeploy();
+    //refetchTables();
+    setTimeout(() => {
+      handleClose();
+      handleTable();
+      handleDeploy();
+    }, "1000");
   };
-
   const getDetails = async () => {
     const formDetails = await axios.get("https://dummyjson.com/products/1");
   };
-
   const handleFunctionsAtModal = () => {
     handleClickOpen();
-    getDetails();
+    //getDetails();
   };
-
   // const setContractAddress= useContractAddress((state) => state.setContractAddress)
   // const { contractAddress } = useContractAddress((state) => ({ contractAddress: state.contractAddress }))
-
   const setDisableDeployButton = useDeployButtonState(
     (state) => state.setDisableDeployButton
   );
   const { disableDeployButton } = useDeployButtonState((state) => ({
     disableDeployButton: state.disableDeployButton,
   }));
-
   // {deploy ? (
   // {showTable ? ( 175
   return (
     <div>
-      {disableDeployButton ? (
-        <Button
-          sx={{ mt: -2.7 }}
-          deploy={disableDeployButton}
-          style={{ background: "#05409e", color: "white" }}
-          onClick={handleFunctionsAtModal}
-        >
-          Get Signing requests
-        </Button>
-      ) : (
-        <div></div>
-      )}
+      <Button
+        sx={{ mt: -2.7 }}
+        deploy={disableDeployButton}
+        style={{ background: "#05409e", color: "white" }}
+        onClick={handleFunctionsAtModal}
+      >
+        Get Signing Requests
+      </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Get Signing requests</DialogTitle>
+        <DialogTitle>Signing Requests</DialogTitle>
         <DialogContent>
-          <p style={{ fontWeight: 500, fontSize: 17 }}>Name: Name from API</p>
-          <p style={{ fontWeight: 500, fontSize: 17 }}>
-            Wallet Address: Wallet Address from API
-          </p>
+          <p style={{ fontWeight: 500, fontSize: 17 }}>Name: Nick</p>
           <InputLabel id="demo-simple-select-label">Claim Type</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -234,6 +187,7 @@ export function FormDialog() {
             value={selectedOption}
             onChange={handleSelectChange}
             fullWidth
+            size="small"
           >
             <MenuItem value="kyc">KYC</MenuItem>
             <MenuItem value="google">Google</MenuItem>
@@ -265,77 +219,52 @@ export function FormDialog() {
           </Button>
         </DialogActions>
       </Dialog>
-
       <Grid item xs={12} showTable={showTable}>
-        {isSuccessTable && !disableDeployButton ? (
-          <>
-            <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
-              <div
-                style={{
-                  height: 161,
-                  width: "100%",
+        <>
+          <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
+            <div
+              style={{
+                height: 162,
+                width: "100%",
+              }}
+            >
+              <DataGrid
+                sx={{
+                  "& .super-app-theme--header": {
+                    backgroundColor: "#05409e",
+                    textTransform: "uppercase",
+                    fontSize: "15px",
+                  },
                 }}
-              >
-                <DataGrid
-                  sx={{
-                    "& .super-app-theme--header": {
-                      backgroundColor: "#05409e",
-                      textTransform: "uppercase",
-                      fontSize: "15px",
-                    },
-                  }}
-                  rows={tableData.products}
-                  columns={columns}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
-                  hideFooterPagination={true}
-                  hideFooter={true}
-                />
-              </div>
-            </Grid>
-
-            <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
-              <div style={{ height: 109, width: "100%", marginTop: "1rem" }}>
-                <DataGrid
-                  sx={{
-                    "& .super-app-theme--header": {
-                      backgroundColor: "#05409e",
-                      textTransform: "uppercase",
-                      fontSize: "15px",
-                    },
-                  }}
-                  rows={rows1}
-                  columns={columns1}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
-                  hideFooterPagination={true}
-                  hideFooter={true}
-                />
-              </div>
-            </Grid>
-          </>
-        ) : (
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: "100vh", padding: "2rem" }}
-          >
-            <Grid item xs={3}>
-              <Card
-                style={{
-                  padding: "0.5rem",
-                  background: "#05409e",
-                  color: "white",
-                }}
-              >
-                NO CLAIMS ADDED
-              </Card>
-            </Grid>
+                rows={rows}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                hideFooterPagination={true}
+                hideFooter={true}
+              />
+            </div>
           </Grid>
-        )}
+          <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
+            <div style={{ height: 160, width: "100%", marginTop: "1rem" }}>
+              <DataGrid
+                sx={{
+                  "& .super-app-theme--header": {
+                    backgroundColor: "#05409e",
+                    textTransform: "uppercase",
+                    fontSize: "15px",
+                  },
+                }}
+                rows={rows1}
+                columns={columns1}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                hideFooterPagination={true}
+                hideFooter={true}
+              />
+            </div>
+          </Grid>
+        </>
       </Grid>
     </div>
   );

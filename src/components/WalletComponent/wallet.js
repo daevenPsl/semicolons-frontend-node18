@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect} from "react";
+import { useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -12,6 +12,7 @@ import {
   useContractAddress,
 } from "../../store/activateContractStore";
 import * as walletService from "../../services/ethereum/wallet.service";
+import { useUSDCContext } from "../../context/UsdcContext";
 
 const columns = [
   {
@@ -37,8 +38,20 @@ const rows = [
 ];
 
 export const Wallet = () => {
-  const [walletAddress, setWalletAddress] = useState('');
-  const [balances, setBalances] = useState([]);
+  const usdc = useUSDCContext();
+  const [walletAddress, setWalletAddress] = useState("");
+  const [balances, setBalances] = useState([
+    {
+      currencyName: "ETH",
+      currencyValue: "0.00",
+      id: 1,
+    },
+    {
+      currencyName: "USDC",
+      currencyValue: usdc.getUSDCBalance(),
+      id: 2,
+    },
+  ]);
   const [balanceLoading, setBalanceLoading] = useState(false);
 
   useEffect(() => {
@@ -46,19 +59,19 @@ export const Wallet = () => {
     setWalletAddress(walletAddress);
   }, []);
 
-  useEffect(() => {
-    setBalanceLoading(true);
-    async function getBalances() {
-      if (!walletAddress) {
-        setBalanceLoading(false);
-        return;
-      }
-      const balancesForAddress = await walletService.getBalances(walletAddress);
-      setBalances(balancesForAddress);
-      setBalanceLoading(false);
-    }
-    getBalances();
-  }, [walletAddress])
+  // useEffect(() => {
+  //   setBalanceLoading(true);
+  //   async function getBalances() {
+  //     if (!walletAddress) {
+  //       setBalanceLoading(false);
+  //       return;
+  //     }
+  //     const balancesForAddress = await walletService.getBalances(walletAddress);
+  //     setBalances(balancesForAddress);
+  //     setBalanceLoading(false);
+  //   }
+  //   getBalances();
+  // }, [walletAddress])
 
   const userName = localStorage.getItem("username");
 
@@ -124,7 +137,6 @@ export const Wallet = () => {
             <Button
               variant="contained"
               style={{
-                background: "#05409e",
                 color: "white",
                 marginLeft: "280px",
               }}
@@ -159,7 +171,6 @@ export const Wallet = () => {
           </div>
         </Grid>
       </CardContent>
-
     </Card>
   );
 };

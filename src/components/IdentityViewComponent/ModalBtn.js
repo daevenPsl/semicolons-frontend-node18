@@ -27,6 +27,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useGetData } from "../../hooks/useGetData";
 import { useAddClaimButtonState } from "../../store/addClaimButtonStore";
+import { useShowTableState } from "../../store/showTableStore";
 // const columns = [
 //   {
 //     field: "key",
@@ -80,7 +81,7 @@ const rows = [
 ];
 
 const rows1 = [
-  { id: 1, services: "Name1", issuer: "Issuer1", claimType: "Type1" },
+  { id: 1, services: "Name1", issuer: "KYC Provider", claimType: "KYC" },
 ];
 export function FormDialog() {
   const columns1 = [
@@ -119,6 +120,13 @@ export function FormDialog() {
     },
   ];
 
+  const setdisableShowTable = useShowTableState(
+    (state) => state.setdisableShowTable
+  );
+  const { disableShowTable } = useShowTableState((state) => ({
+    disableShowTable: state.disableShowTable,
+  }));
+
   const setAddClaimButton = useAddClaimButtonState(
     (state) => state.setAddClaimButton
   );
@@ -128,7 +136,9 @@ export function FormDialog() {
   }));
 
   const handleAddClaim = () => {
-    setAddClaimButton(false);
+    setTimeout(() => {
+      setAddClaimButton(false);
+    }, "1000");
   };
   const [open, setOpen] = React.useState(false);
   const [showTable, setShowTable] = React.useState(false);
@@ -146,9 +156,13 @@ export function FormDialog() {
     setDeploy(false);
   };
   const handleMultipleFunctions = () => {
-    handleClose();
-    handleTable();
-    handleDeploy();
+    setTimeout(() => {
+      setdisableShowTable(true);
+      handleClose();
+      handleTable();
+      handleDeploy();
+      //setShowTable(true);
+    }, "1000");
   };
   const [alignment, setAlignment] = React.useState("left");
   const {
@@ -178,7 +192,7 @@ export function FormDialog() {
         <div></div>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Enter the Claim Details</DialogTitle>
+        <DialogTitle>Select the Claim Issuer</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>
             To subscribe to this website, please enter your email address here. We
@@ -196,7 +210,6 @@ export function FormDialog() {
           {/* <InputLabel id="demo-simple-select-label">Select the claim issuer</InputLabel> */}
           <Select
             labelId="demo-simple-select-label"
-            defaultValue="1"
             id="role"
             //value={role}
             label="Role"
@@ -205,8 +218,7 @@ export function FormDialog() {
             //onChange={handleSelectChange}
             fullWidth
           >
-            <MenuItem value="1">Select the Claim Issuer</MenuItem>
-            <MenuItem value="kyc">Options from api</MenuItem>
+            <MenuItem value="kyc">KYC Provider</MenuItem>
             {/* <MenuItem value="google">Google</MenuItem> */}
           </Select>
           {/* <TextField
@@ -271,25 +283,27 @@ export function FormDialog() {
               )}
             </div>
           </Grid>
-          <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
-            <div style={{ height: 109, width: "100%", marginTop: "1rem" }}>
-              <DataGrid
-                sx={{
-                  "& .super-app-theme--header": {
-                    backgroundColor: "#05409e",
-                    textTransform: "uppercase",
-                    fontSize: "15px",
-                  },
-                }}
-                rows={rows1}
-                columns={columns1}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                hideFooterPagination={true}
-                hideFooter={true}
-              />
-            </div>
-          </Grid>
+          {disableShowTable && (
+            <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
+              <div style={{ height: 109, width: "100%", marginTop: "1rem" }}>
+                <DataGrid
+                  sx={{
+                    "& .super-app-theme--header": {
+                      backgroundColor: "#05409e",
+                      textTransform: "uppercase",
+                      fontSize: "15px",
+                    },
+                  }}
+                  rows={rows1}
+                  columns={columns1}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  hideFooterPagination={true}
+                  hideFooter={true}
+                />
+              </div>
+            </Grid>
+          )}
         </>
       </Grid>
     </div>

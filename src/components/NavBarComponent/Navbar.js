@@ -22,8 +22,6 @@ const Navbar = () => {
   const userName = localStorage.getItem("username");
 
   const handleLogout = () => {
-
-
     localStorage.removeItem("username");
     localStorage.removeItem("password");
     localStorage.removeItem("userEmail");
@@ -69,7 +67,13 @@ const Navbar = () => {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, textTransform: "uppercase", fontWeight: "bold",fontSize: 22, marginLeft:"-20px" }}
+            sx={{
+              flexGrow: 1,
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              fontSize: 22,
+              marginLeft: "-20px",
+            }}
           >
             AatmaNirbhar Wallet
           </Typography>
