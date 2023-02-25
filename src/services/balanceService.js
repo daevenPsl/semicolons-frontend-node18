@@ -1,10 +1,6 @@
 import axios from "axios";
 
-
-
 // https://dummyjson.com/products/1
-
-
 
 export const BalanceService = {
   getBalance: async () => {
@@ -15,6 +11,22 @@ export const BalanceService = {
 
     //   withCredentials: false,
     // }).then((res) => res.data.data);
+
+   
+    const username=localStorage.getItem('username');
+    const password=localStorage.getItem('password')
+    const email= localStorage.getItem('userEmail')
+    const role= localStorage.getItem('role');
+
+    
+
+    console.log({
+      email: email,
+      password: password,
+      username: username,
+      role: role
+    });
+
 
     return axios.get('https://dummyjson.com/products?limit=10').then((res) => res.data);
 
