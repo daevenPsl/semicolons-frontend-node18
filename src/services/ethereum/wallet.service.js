@@ -34,7 +34,6 @@ export async function createVerifierAccount() {
 export async function createWalletForVerifier(signer) {
   const response = await getClaimIssuer();
   const trustedIssuer = response[0]["walletAddress"];
-  console.log("truested isssuer   ================= ------------------->" + trustedIssuer);
   const contract = await Verifier_factory.connect(signer)
     .deploy(trustedIssuer)
     .then((c) => c.deployed());

@@ -79,14 +79,23 @@ export default function LoginComponent() {
   };
 
   const handleOtpClick = async () => {
-    console.log("Signup Role: ", role);
-    const walletAddress = await signupService.signup(role);
-    console.log("Wallet created for identity:", walletAddress);
-    localStorage.setItem("walletAddress", walletAddress);
-    let username = localStorage.getItem("username");
-    let userEmail = localStorage.getItem("userEmail");
-    await signupService.storeIdentity(username, userEmail, walletAddress, role);
-    navigate("/identityViewPage");
+    try {
+      console.log("Signup Role: ", role);
+      const walletAddress = await signupService.signup(role);
+      console.log("Wallet created for identity:", walletAddress);
+      localStorage.setItem("walletAddress", walletAddress);
+      let username = localStorage.getItem("username");
+      let userEmail = localStorage.getItem("userEmail");
+      await signupService.storeIdentity(
+        username,
+        userEmail,
+        walletAddress,
+        role
+      );
+      navigate("/identityViewPage");
+    } catch (e) {
+      console.log("exception occurred   " + e);
+    }
   };
 
   const handleRecoverClick = () => {
