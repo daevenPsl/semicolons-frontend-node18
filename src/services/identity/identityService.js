@@ -12,7 +12,7 @@ export const getIdentities = async () => {
   }
 };
 
-export const getIdentity = async () => {
+export const getIdentity = async (walletAddress) => {
   try {
     let response = await instance.getRequest(
       {},

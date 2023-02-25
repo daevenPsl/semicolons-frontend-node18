@@ -12,6 +12,16 @@ export const getClaim = async () => {
   }
 };
 
+export const getClaimForIdentity = async (walletAddress) => {
+  try {
+    let response = await instance.getRequest({}, `/claim/retrieve/${walletAddress}`, {});
+    return response;
+  } catch (exception) {
+    console.log("exception in get claim function: " + exception);
+    throw new Error("claim retrieval exception");
+  }
+};
+
 export const saveClaim = async (username, walletAddress, claimType) => {
   try {
     let headers = {};

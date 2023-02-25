@@ -1,3 +1,5 @@
+import { fundWalletAddressWithUSDC } from './contractInteractions';
+
 const ethers = require('ethers');
 const ethersUtils = require('ethers/lib/utils');
 const constants = require('./utils/constants');
@@ -29,9 +31,7 @@ export async function activateWallet(
 
     activateUserOperation.paymasterAndData = await calculateUserOperationPaymasterAndData(activateUserOperation);
 
-    const ADMIN_SIGNER = new ethers.Wallet(constants.CONFIG.ADMIN_PRIVATE_KEY, provider);
-
-    await fundWalletAddressWithUSDC(ADMIN_SIGNER);
+    await fundWalletAddressWithUSDC(walletOwnerAddress);
     
     const approveCallData = await calculateActivateUserOperationCallData()
 
@@ -71,10 +71,7 @@ export async function activateWallet(
 
 }
 
-async function fundWalletAddressWithUSDC (adminSigner) {
-    // call mint function on USDC contract for the walletAddress
 
-}
 
 async function calculateActivateUserOperationCallData(
     provider, walletAddress) {

@@ -4,7 +4,17 @@ const instance = new APIService();
 
 export const getSignedClaim = async () => {
   try {
-    let response = await instance.getRequest({}, "/signed-claims", {});
+    let response = await instance.getRequest({}, "/signed-claims/", {});
+    return response;
+  } catch (exception) {
+    console.log("exception in get signed claim function: " + exception);
+    throw new Error("Signed claim retrieval exception");
+  }
+};
+
+export const getSignedClaimForIdentity = async (walletAddress) => {
+  try {
+    let response = await instance.getRequest({}, `/signed-claims/${walletAddress}`, {});
     return response;
   } catch (exception) {
     console.log("exception in get signed claim function: " + exception);
