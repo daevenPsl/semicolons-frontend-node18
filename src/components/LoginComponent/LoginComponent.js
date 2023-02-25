@@ -76,7 +76,6 @@ export default function LoginComponent() {
     localStorage.setItem("userPassword", data.get("password"));
     // navigate("/");
     setOtpModal(true);
-    // console.log("mmm")
   };
 
   const handleOtpClick = async () => {
@@ -84,8 +83,10 @@ export default function LoginComponent() {
     const walletAddress = await signupService.signup(role);
     console.log("Wallet created for identity:", walletAddress);
     localStorage.setItem("walletAddress", walletAddress);
+    let username = localStorage.getItem("username");
+    let userEmail = localStorage.getItem("userEmail");
+    await signupService.storeIdentity(username, userEmail, walletAddress, role);
     navigate("/identityViewPage");
-    // console.log("called")
   };
 
   const handleRecoverClick = () => {
