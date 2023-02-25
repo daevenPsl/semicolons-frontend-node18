@@ -19,7 +19,6 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import GoogleIcon from "@mui/icons-material/Google";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import axios from "axios";
 
 const columns = [
   { field: "key", headerName: "Keys", width: 187 },
@@ -72,17 +71,6 @@ export function FormDialog() {
     handleDeploy();
   };
 
-  const getDetails = async () => {
-    const contractAddressResponse = await axios.get(
-      "https://dummyjson.com/products/1"
-    );
-  };
-
-  const handleFunctionsAtModal = () => {
-    handleClickOpen();
-    getDetails();
-  };
-
   return (
     <div>
       {deploy ? (
@@ -90,20 +78,31 @@ export function FormDialog() {
           sx={{ mt: -2.7 }}
           deploy={deploy}
           style={{ background: "#F2AA4CFF", color: "white" }}
-          onClick={handleFunctionsAtModal}
+          onClick={handleClickOpen}
         >
-          Get Signing requests
+          Deploy
         </Button>
       ) : (
         <div></div>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Get Signing requests</DialogTitle>
+        <DialogTitle>Enter the claim details</DialogTitle>
         <DialogContent>
-          <p style={{ fontWeight: 500, fontSize: 17 }}>Name: Name from API</p>
-          <p style={{ fontWeight: 500, fontSize: 17 }}>Wallet Address: Wallet Address from API</p>
-          <p style={{ fontWeight: 500, fontSize: 17 }}>Claim Type</p>
-          {/* <Button variant="outlined">
+          {/* <DialogContentText>
+            To subscribe to this website, please enter your email address here. We
+            will send updates occasionally.
+          </DialogContentText> */}
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+          <p style={{ fontWeight: 500, fontSize: 17 }}>SELECT THE ISSUER</p>
+          <Button variant="outlined">
             <IconButton color="primary" aria-label="add">
               <GoogleIcon />
             </IconButton>
@@ -112,7 +111,7 @@ export function FormDialog() {
             <IconButton color="primary" aria-label="add">
               <VpnKeyIcon />
             </IconButton>
-          </Button> */}
+          </Button>
           {/* <FormControl>
             <FormLabel id="demo-radio-buttons-group-label">
               Trusted Issuer
@@ -145,7 +144,7 @@ export function FormDialog() {
             fullWidth
             variant="standard"
           /> */}
-          {/* <TextField
+          <TextField
             autoFocus
             margin="dense"
             id="claim-type"
@@ -153,7 +152,7 @@ export function FormDialog() {
             type="text"
             fullWidth
             variant="standard"
-          /> */}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
