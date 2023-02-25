@@ -22,8 +22,12 @@ const Navbar = () => {
   const userName = localStorage.getItem("username");
 
   const handleLogout = () => {
+
+
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
     localStorage.removeItem("userEmail");
-    localStorage.removeItem("userPassword");
+    localStorage.removeItem("role");
     navigate("/");
   };
 
