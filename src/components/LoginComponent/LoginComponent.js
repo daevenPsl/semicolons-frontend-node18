@@ -20,6 +20,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import * as signupService from "../../services/signup.service.js";
 
 // import { LockOutlinedIcon } from "@mui/icons-material";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
@@ -78,7 +79,10 @@ export default function LoginComponent() {
     // console.log("mmm")
   };
 
-  const handleOtpClick = () => {
+  const handleOtpClick = async () => {
+    console.log("Signup Role: ", role);
+    const walletAddress = await signupService.signup(role);
+    console.log("Wallet created for identity:", walletAddress);
     navigate("/identityViewPage");
     // console.log("called")
   };
