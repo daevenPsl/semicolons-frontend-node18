@@ -16,6 +16,10 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Modal from '@mui/material/Modal';
 import styles from './loginComponent.module.css'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 // import { LockOutlinedIcon } from "@mui/icons-material";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
@@ -43,8 +47,8 @@ export default function LoginComponent() {
 
   let navigate = useNavigate();
 
-  const currentUserEmail=localStorage.getItem('userEmail')
-  const currentUserPassword= localStorage.getItem('userPassword')
+  // const currentUserEmail=localStorage.getItem('userEmail')
+  // const currentUserPassword= localStorage.getItem('userPassword')
 
   const [otpModal, setOtpModal]= useState(false);
   const [recoverModal, setRecoverModal]= useState(false);
@@ -106,6 +110,14 @@ export default function LoginComponent() {
     navigate("/identityViewPage")
   }
 
+  const [role, setRole] = useState('');
+
+  const handleRoleChange = (event) => {
+    // setAge(event.target.value);
+    setRole(event.target.value)
+    localStorage.setItem('role', event.target.value)
+  };
+
   return (
     <>
     <ThemeProvider theme={theme}>
@@ -157,6 +169,20 @@ export default function LoginComponent() {
               id="password"
               autoComplete="current-password"
             />
+
+        <InputLabel id="demo-simple-select-label">Role</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="role"
+          value={role}
+          label="Role"
+          onChange={handleRoleChange}
+          fullWidth
+        >
+          <MenuItem value="identity">Identity</MenuItem>
+          <MenuItem value="claim-issuer">Claim Issuer</MenuItem>
+          <MenuItem value="claim-verifier">Claim Verifier</MenuItem>
+        </Select>
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

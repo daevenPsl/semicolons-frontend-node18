@@ -19,11 +19,6 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import GoogleIcon from "@mui/icons-material/Google";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import { useDeployButtonState } from "../../store/deployButtonStore";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import axios from "axios";
 
 const columns = [
   { field: "key", headerName: "Keys", width: 187 },
@@ -53,16 +48,6 @@ export function FormDialog() {
   const [open, setOpen] = React.useState(false);
   const [showTable, setShowTable] = React.useState(false);
   const [deploy, setDeploy] = React.useState(true);
-  const [selectedOption, setSelectedOption] = React.useState("");
-  const [showTextField, setShowTextField] = React.useState(false);
-
-  const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value);
-    console.log(event.target.value);
-    if (event.target.value == "kyc") {
-      setShowTextField(true);
-    }
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,8 +62,7 @@ export function FormDialog() {
   };
 
   const handleDeploy = () => {
-    // setDeploy(false);
-    setDisableDeployButton(false);
+    setDeploy(false);
   };
 
   const handleMultipleFunctions = () => {
@@ -87,49 +71,38 @@ export function FormDialog() {
     handleDeploy();
   };
 
-  const getDetails = async () => {
-    const formDetails = await axios.get("https://dummyjson.com/products/1");
-  };
-
-  const handleFunctionsAtModal = () => {
-    handleClickOpen();
-    getDetails();
-  };
-
-  // const setContractAddress= useContractAddress((state) => state.setContractAddress)
-  // const { contractAddress } = useContractAddress((state) => ({ contractAddress: state.contractAddress }))
-
-  const setDisableDeployButton = useDeployButtonState(
-    (state) => state.setDisableDeployButton
-  );
-  const { disableDeployButton } = useDeployButtonState((state) => ({
-    disableDeployButton: state.disableDeployButton,
-  }));
-
-  // {deploy ? (
-  // {showTable ? ( 175
   return (
     <div>
-      {disableDeployButton ? (
+      {deploy ? (
         <Button
           sx={{ mt: -2.7 }}
-          deploy={disableDeployButton}
+          deploy={deploy}
           style={{ background: "#F2AA4CFF", color: "white" }}
-          onClick={handleFunctionsAtModal}
+          onClick={handleClickOpen}
         >
-          Get Signing requests
+          Deploy
         </Button>
       ) : (
         <div></div>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Get Signing requests</DialogTitle>
+        <DialogTitle>Enter the claim details</DialogTitle>
         <DialogContent>
-          <p style={{ fontWeight: 500, fontSize: 17 }}>Name: Name from API</p>
-          <p style={{ fontWeight: 500, fontSize: 17 }}>
-            Wallet Address: Wallet Address from API
-          </p>
-          {/* <Button variant="outlined">
+          {/* <DialogContentText>
+            To subscribe to this website, please enter your email address here. We
+            will send updates occasionally.
+          </DialogContentText> */}
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+          <p style={{ fontWeight: 500, fontSize: 17 }}>SELECT THE ISSUER</p>
+          <Button variant="outlined">
             <IconButton color="primary" aria-label="add">
               <GoogleIcon />
             </IconButton>
@@ -138,7 +111,7 @@ export function FormDialog() {
             <IconButton color="primary" aria-label="add">
               <VpnKeyIcon />
             </IconButton>
-          </Button> */}
+          </Button>
           {/* <FormControl>
             <FormLabel id="demo-radio-buttons-group-label">
               Trusted Issuer
@@ -171,7 +144,7 @@ export function FormDialog() {
             fullWidth
             variant="standard"
           /> */}
-          {/* <TextField
+          <TextField
             autoFocus
             margin="dense"
             id="claim-type"
@@ -179,32 +152,7 @@ export function FormDialog() {
             type="text"
             fullWidth
             variant="standard"
-          /> */}
-          <InputLabel id="demo-simple-select-label">Claim Type</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="role"
-            //value={role}
-            label="Role"
-            //onChange={handleRoleChange}
-            value={selectedOption}
-            onChange={handleSelectChange}
-            fullWidth
-          >
-            <MenuItem value="kyc">KYC</MenuItem>
-            <MenuItem value="google">Google</MenuItem>
-          </Select>
-          {showTextField && (
-            <TextField
-              autoFocus
-              margin="dense"
-              id="aadharNumber"
-              label="Aadhar Number"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-          )}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -213,7 +161,7 @@ export function FormDialog() {
       </Dialog>
 
       <Grid item xs={12} showTable={showTable}>
-        {!disableDeployButton ? (
+        {showTable ? (
           <>
             <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
               <div style={{ height: 213, width: "100%" }}>
