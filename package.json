@@ -20,6 +20,7 @@
     "react-query-devtools": "^2.6.3",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
+    "soul-wallet-lib": "github:proofofsoulprotocol/soulwalletlib#v0.1.0-alpha.4",
     "web-vitals": "^2.1.4",
     "zustand": "^4.3.3"
   },
@@ -46,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "ethers": "^5.7.2"
   }
 }

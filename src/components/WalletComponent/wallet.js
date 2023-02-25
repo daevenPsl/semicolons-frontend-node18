@@ -16,6 +16,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useModalState, useActiveButtonState, useContractAddress } from "../../store/activateContractStore";
 import { useGetBalance } from "../../hooks/useGetBalance";
+import { activateWallet } from "../../services/activateWallet";
 
 
 // const columns = [
@@ -72,12 +73,19 @@ export const Wallet = () => {
 
   });
 
-  const activateContract= async()=>{
-    const contractAddressResponse= await axios.get('https://dummyjson.com/products/1')
+  const activateContract = async()=>{
+
+    const walletOwnerPublicKey = localStorage.getItem("owner-public-key");
+    const walletAddress = localStorage.getItem("owner-wallet-address");
+
+    await activateWallet(walletOwnerPublicKey, walletAddress);
+
+    // TODO - POST AXIOS to CREATE IDENTITY passing args
+    const contractAddressResponse = await axios.get('https://dummyjson.com/products/1')
     console.log("activate contract address clicked", contractAddressResponse)
 
-    //will have to set the contract address here
-    // setContractAddress(contractAddressResponse.data.description)
+    // TODO : this is moved to handleOTP Click
+    // setContractAddress(walletAddress)
     // setShowModal({ showModal:true })
 
     setContractAddress({contractAddress: contractAddressResponse.data.description})

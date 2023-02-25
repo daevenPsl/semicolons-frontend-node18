@@ -19,6 +19,7 @@ import styles from './loginComponent.module.css'
 
 // import { LockOutlinedIcon } from "@mui/icons-material";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import { calculateWalletAddress } from '../../services/signUpWallet';
 
 const {enterButton}=styles
 
@@ -74,7 +75,15 @@ export default function LoginComponent() {
     // console.log("mmm")
   };
 
-  const handleOtpClick=()=>{
+  const handleOtpClick=async ()=>{
+
+    const ownerDetails = await calculateWalletAddress();
+
+    localStorage.setItem('owner-private-key', ownerDetails.ownerPrivateKey);
+    localStorage.setItem('owner-public-key', ownerDetails.ownerPublicKey);
+    localStorage.setItem('owner-wallet-address', ownerDetails.ownerWalletAddress);
+
+    // TODO : SET WALLET_ADDRESS to be displayed in the UI
     navigate("/identityViewPage");
     // console.log("called")
   }
