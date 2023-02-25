@@ -52,21 +52,21 @@ import { useAddClaimButtonState } from "../../store/addClaimButtonStore";
 // ];
 const columns = [
   {
-    field: "title",
+    field: "keyId",
     headerName: "Keys",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 187,
   },
   {
-    field: "brand",
+    field: "keyPurpose",
     headerName: "Purpose",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
     width: 220,
   },
   {
-    field: "category",
+    field: "keyType",
     headerName: "Category",
     headerClassName: "super-app-theme--header",
     headerAlign: "center",
