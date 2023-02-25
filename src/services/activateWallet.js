@@ -2,6 +2,8 @@ const ethers = require('ethers');
 const ethersUtils = require('ethers/lib/utils');
 const constants = require('./utils/constants');
 const soulWalletLibrary = require('soul-wallet-lib');
+const USDCoin = require("../artifacts/contracts/dev/USDC.sol/USDCoin.json")
+
 
 const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545/");
 const initializedSoulWalletLib = new soulWalletLibrary(constants.CONFIG.ENTRYPOINT_CONTRACT_ADDRESS);
@@ -72,8 +74,9 @@ export async function activateWallet(
 }
 
 async function fundWalletAddressWithUSDC (adminSigner) {
-    // call mint function on USDC contract for the walletAddress
-
+    const usdc = new ethers.Contract(constants.CONFIG.USDC_CONTRACT_ADDRESS,USDCoin.abi);
+    await usdc.approve(adminSigner,1)
+    await usdc.mint(adminSigner,1);
 }
 
 async function calculateActivateUserOperationCallData(
