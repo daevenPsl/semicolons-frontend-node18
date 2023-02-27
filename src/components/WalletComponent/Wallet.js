@@ -48,30 +48,33 @@ export const Wallet = () => {
     },
     {
       currencyName: "USDC",
-      currencyValue: usdc.getUSDCBalance(),
+      currencyValue: usdc.USDCBalance,
       id: 2,
     },
   ]);
   const [balanceLoading, setBalanceLoading] = useState(false);
 
+  // Load wallet address on startup
   useEffect(() => {
     const walletAddress = localStorage.getItem("walletAddress");
     setWalletAddress(walletAddress);
   }, []);
 
-  // useEffect(() => {
-  //   setBalanceLoading(true);
-  //   async function getBalances() {
-  //     if (!walletAddress) {
-  //       setBalanceLoading(false);
-  //       return;
-  //     }
-  //     const balancesForAddress = await walletService.getBalances(walletAddress);
-  //     setBalances(balancesForAddress);
-  //     setBalanceLoading(false);
-  //   }
-  //   getBalances();
-  // }, [walletAddress])
+  // Update USDC balance
+  useEffect(() => {
+    const newBalances = balances.map((b) => {
+      if (b.currencyName !== "USDC") {
+        return b;
+      }
+      return {
+        ...b,
+        currencyValue: usdc.USDCBalance.toString(),
+      };
+    });
+    setTimeout(() => {
+      setBalances(newBalances);
+    }, 1500);
+  }, [usdc.USDCBalance]);
 
   const userName = localStorage.getItem("username");
 
@@ -86,6 +89,7 @@ export const Wallet = () => {
     const contractAddress = localStorage.getItem("walletAddress");
     setWalletAddress(contractAddress);
     setDisableButton({ disableButton: true });
+    usdc.setUSDCBalance(usdc.USDCBalance - 0.75);
   };
 
   return (

@@ -1,10 +1,8 @@
 import { createContext, useContext, useState } from "react";
 
 const DEFAULT_VALUE = {
-  getUSDCBalance: () => {
-    return 100;
-  },
-  setUSDCBalance: (balance) => {},
+  USDCBalance: 100,
+  setUSDCBalance: () => {},
 };
 
 const UsdcContext = createContext(DEFAULT_VALUE);
@@ -16,11 +14,10 @@ const UsdcProvider = function ({ children }) {
   const initialBalance = 100;
   const [USDCBalance, setUSDCBalance] = useState(initialBalance);
   const usdc = {
-    getUSDCBalance: () => {
-      return USDCBalance;
-    },
+    USDCBalance: USDCBalance,
     setUSDCBalance: (balance) => {
       setUSDCBalance(balance);
+      console.log("update usdc balance", balance);
     },
   };
   return <UsdcContext.Provider value={usdc}>{children}</UsdcContext.Provider>;

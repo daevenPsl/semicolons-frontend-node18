@@ -21,11 +21,12 @@ const NETWORK_URL = "http://localhost:8545/";
 
 const provider = new ethers.providers.JsonRpcProvider(NETWORK_URL);
 
-
-export default {
+const constants = {
   KEY_PURPOSES,
   KEY_TYPES,
   CLAIM_SCHEMES,
   CLAIM_TYPES,
   PROVIDER: provider,
 };
+
+export default constants;

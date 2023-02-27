@@ -1,56 +1,22 @@
-import * as React from "react";
+import GoogleIcon from "@mui/icons-material/Google";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import GoogleIcon from "@mui/icons-material/Google";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { DataGrid } from "@mui/x-data-grid";
+import * as React from "react";
+import { useUSDCContext } from "../../context/UsdcContext";
 import { useGetData } from "../../hooks/useGetData";
 import { useAddClaimButtonState } from "../../store/addClaimButtonStore";
 import { useShowTableState } from "../../store/showTableStore";
-// const columns = [
-//   {
-//     field: "key",
-//     headerName: "Keys",
-//     headerClassName: "super-app-theme--header",
-//     headerAlign: "center",
-//     width: 187,
-//   },
-//   {
-//     field: "purpose",
-//     headerName: "Purpose",
-//     headerClassName: "super-app-theme--header",
-//     headerAlign: "center",
-//     width: 220,
-//   },
-//   {
-//     field: "type",
-//     headerName: "Type",
-//     headerClassName: "super-app-theme--header",
-//     headerAlign: "center",
-//     width: 185,
-//   },
-// ];
+
 const columns = [
   {
     field: "keyId",
@@ -83,7 +49,9 @@ const rows = [
 const rows1 = [
   { id: 1, services: "Name1", issuer: "KYC Provider", claimType: "KYC" },
 ];
+
 export function FormDialog() {
+  const usdc = useUSDCContext();
   const columns1 = [
     {
       field: "issuer",
@@ -138,6 +106,8 @@ export function FormDialog() {
   const handleAddClaim = () => {
     setTimeout(() => {
       setAddClaimButton(false);
+      // USDC
+      usdc.setUSDCBalance(usdc.USDCBalance - 0.3);
     }, "1000");
   };
   const [open, setOpen] = React.useState(false);
@@ -182,7 +152,6 @@ export function FormDialog() {
       {deploy ? (
         <Button
           sx={{ mt: -2.7, mb: 2 }}
-          deploy={deploy}
           style={{ background: "#05409e", color: "white" }}
           onClick={handleClickOpen}
         >
@@ -194,20 +163,6 @@ export function FormDialog() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Select the Claim Issuer</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
-          </DialogContentText> */}
-          {/* <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="text"
-            fullWidth
-            variant="standard"
-          /> */}
-          {/* <InputLabel id="demo-simple-select-label">Select the claim issuer</InputLabel> */}
           <Select
             labelId="demo-simple-select-label"
             id="role"
@@ -219,17 +174,8 @@ export function FormDialog() {
             fullWidth
           >
             <MenuItem value="kyc">KYC Provider</MenuItem>
-            {/* <MenuItem value="google">Google</MenuItem> */}
           </Select>
-          {/* <TextField
-            autoFocus
-            margin="dense"
-            id="claim-type"
-            label="Claim Type"
-            type="text"
-            fullWidth
-            variant="standard"
-          /> */}
+
           <ToggleButtonGroup
             value={alignment}
             exclusive
@@ -283,7 +229,7 @@ export function FormDialog() {
               )}
             </div>
           </Grid>
-          {disableShowTable && (
+          {
             <Grid item xs={12} sx={{ marginX: "0.2rem" }}>
               <div style={{ height: 109, width: "100%", marginTop: "1rem" }}>
                 <DataGrid
@@ -303,7 +249,7 @@ export function FormDialog() {
                 />
               </div>
             </Grid>
-          )}
+          }
         </>
       </Grid>
     </div>
